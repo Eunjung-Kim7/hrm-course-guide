@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>인적자원관리 2주차 확인학습 | HRM의 이해</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f7f5; --surface:#ffffff; --surface2:#f6fbfa;
+  --border:#dbe8e4; --border2:#b7d3cb;
+  --teal:#0f766e; --teal2:#0d9488; --accent2:#7c3aed;
+  --green:#16a34a; --orange:#ea580c; --red:#dc2626; --yellow:#d97706;
+  --text:#0f172a; --t2:#374151; --t3:#6b7280;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;min-height:100vh;
+  font-size:15px;line-height:1.65;-webkit-text-size-adjust:100%;padding-bottom:60px;}
+
+.topbar{position:sticky;top:0;z-index:300;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);
+  border-bottom:2px solid var(--border);padding:12px 18px;}
+.topbar-inner{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+.logo-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--teal),var(--accent2));
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.logo-text{font-size:.95rem;font-weight:900;color:var(--text);}
+.logo-sub{font-size:.7rem;color:var(--t3);margin-top:1px;}
+.topbar-badge{margin-left:auto;background:var(--surface2);border:1px solid var(--border);border-radius:20px;
+  padding:5px 12px;font-size:.72rem;font-weight:700;color:var(--teal);white-space:nowrap;}
+
+.main{max-width:820px;margin:0 auto;padding:18px 16px 40px;}
+
+.hero{background:linear-gradient(135deg,#ecfdf5,#f5f3ff);border:2px solid #99f6e4;border-radius:16px;
+  padding:22px 20px;margin-bottom:16px;}
+.hero h1{font-size:1.15rem;font-weight:900;color:var(--teal);margin-bottom:8px;line-height:1.4;}
+.hero p{font-size:.83rem;color:var(--t2);line-height:1.75;}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+.hero-chip{background:#fff;border:1px solid #99f6e4;border-radius:20px;padding:4px 12px;font-size:.72rem;
+  font-weight:700;color:var(--teal);}
+
+.info-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:16px;
+  margin-bottom:16px;}
+.info-title{font-size:.85rem;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+@media (max-width:560px){.info-grid{grid-template-columns:1fr 1fr;}.info-grid>div:nth-child(3){grid-column:1/-1;}}
+.info-field label{display:block;font-size:.7rem;font-weight:700;color:var(--t3);margin-bottom:4px;}
+.info-field input{width:100%;padding:9px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;
+  font-family:inherit;background:#fff;}
+.info-field input:focus{outline:none;border-color:var(--teal2);}
+
+.toolbar{position:sticky;top:62px;z-index:250;background:rgba(255,255,255,.98);backdrop-filter:blur(10px);
+  border:1.5px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:18px;
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+.tb-btn{border:1.5px solid var(--border);background:#fff;border-radius:9px;padding:8px 13px;font-size:.76rem;
+  font-weight:700;color:var(--t2);cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .15s;}
+.tb-btn:hover{border-color:var(--teal2);color:var(--teal);}
+.tb-btn.primary{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tb-btn.primary:hover{background:#115e59;}
+.tb-btn.google{background:#1a7f4b;border-color:#1a7f4b;color:#fff;}
+.tb-btn.google:hover{background:#166a3f;}
+.tb-btn:disabled{opacity:.5;cursor:wait;}
+.tb-status{font-size:.7rem;color:var(--t3);margin-left:auto;}
+
+.progress-wrap{width:100%;height:8px;background:#e5e7eb;border-radius:6px;overflow:hidden;margin:2px 0 14px;}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--teal),var(--teal2));width:0%;transition:width .3s;}
+.progress-label{font-size:.72rem;color:var(--t3);margin-bottom:4px;display:flex;justify-content:space-between;}
+
+.section-label{font-size:.7rem;font-weight:800;letter-spacing:.03em;color:var(--t3);text-transform:uppercase;
+  margin:22px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--border);}
+
+.quiz{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;
+  transition:border-color .15s;}
+.quiz.graded-correct{border-color:#86efac;background:#f0fdf4;}
+.quiz.graded-wrong{border-color:#fca5a5;background:#fef2f2;}
+.qhead{display:flex;gap:10px;margin-bottom:10px;}
+.qnum{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--surface2);border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.74rem;font-weight:800;color:var(--teal);}
+.qtext{font-size:.87rem;font-weight:700;color:var(--text);line-height:1.55;padding-top:2px;}
+.qtag{display:inline-block;font-size:.62rem;font-weight:800;color:var(--accent2);background:#f5f3ff;
+  border-radius:5px;padding:1px 6px;margin-bottom:5px;}
+
+.opts{display:flex;flex-direction:column;gap:7px;margin-left:36px;}
+.opt{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1.5px solid var(--border);border-radius:9px;
+  cursor:pointer;font-size:.82rem;color:var(--t2);transition:all .12s;background:#fff;}
+.opt:hover{border-color:var(--teal2);}
+.opt input{accent-color:var(--teal);width:15px;height:15px;flex-shrink:0;}
+.opt.picked{border-color:var(--teal2);background:#f0fdfa;font-weight:700;color:var(--text);}
+.opt.opt-correct{border-color:#16a34a;background:#f0fdf4;font-weight:700;color:#166534;}
+.opt.opt-wrong{border-color:#dc2626;background:#fef2f2;color:#991b1b;}
+
+.fill-wrap{margin-left:36px;}
+.fill-wrap input[type=text]{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;
+  font-size:.85rem;font-family:inherit;background:#fff;}
+.fill-wrap input[type=text]:focus{outline:none;border-color:var(--teal2);}
+
+.qfeedback{margin:10px 0 0 36px;font-size:.78rem;line-height:1.6;padding:9px 11px;border-radius:8px;display:none;}
+.quiz.graded-correct .qfeedback{display:block;background:#dcfce7;color:#14532d;}
+.quiz.graded-wrong .qfeedback{display:block;background:#fee2e2;color:#7f1d1d;}
+.qfeedback b{font-weight:800;}
+
+.score-banner{display:none;background:linear-gradient(135deg,#0d9488,#0f766e);color:#fff;border-radius:14px;
+  padding:18px 20px;margin:18px 0;text-align:center;}
+.score-banner.show{display:block;}
+.score-banner .big{font-size:1.9rem;font-weight:900;}
+.score-banner .sub{font-size:.82rem;opacity:.92;margin-top:4px;line-height:1.6;}
+
+.google-state{display:none;margin-top:8px;padding:9px 12px;border-radius:9px;font-size:.76rem;line-height:1.6;
+  border:1.5px solid;}
+.google-state.show{display:block;}
+.google-state.sending{background:#eef4fb;border-color:#bfd3e8;color:#315875;}
+.google-state.sent{background:#eef8f2;border-color:#bddbc9;color:#315f46;}
+.google-state.error{background:#fff0ee;border-color:#e9bbb6;color:#8f453d;}
+
+.foot{text-align:center;color:var(--t3);font-size:.7rem;padding:26px 16px 8px;}
+
+@media print{
+  .topbar,.toolbar,.tb-btn,.google-state{display:none!important;}
+  body{background:#fff;padding:0;}
+  .main{max-width:100%;padding:0;}
+  .print-only{display:block!important;}
+  .quiz{break-inside:avoid;border:1px solid #ccc!important;background:#fff!important;}
+  .hero,.info-card{display:none!important;}
+}
+.print-only{display:none;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="logo-icon">🗂️</div>
+    <div>
+      <div class="logo-text">인적자원관리 <span style="color:var(--accent2)">2주차 확인학습</span></div>
+      <div class="logo-sub">경영정보학과 · 2026-2 · HRM의 이해</div>
+    </div>
+    <div class="topbar-badge" id="progressText">0 / 15 완료</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="hero">
+    <h1>📘 2주차 확인학습 — 기업은 왜 사람을 관리해야 하는가?</h1>
+    <p>이번 주 수업(사람의 특성 · HRM 전체 지도 · 수평·수직 정합성 · 기업·산업·직무 구분 · HRM을 바꾸는 4가지 힘)을 바탕으로 15문항을 확인합니다. 정답만 외우기보다, 왜 그런지 스스로 설명할 수 있는지 확인해보세요.</p>
+    <div class="hero-meta">
+      <div class="hero-chip">⏱ 예상 소요 10~12분</div>
+      <div class="hero-chip">📝 객관식 12 · 단답형 3</div>
+      <div class="hero-chip">💾 자동 임시저장 지원</div>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-title">✍️ 제출 정보</div>
+    <div class="info-grid">
+      <div class="info-field"><label>학번</label><input type="text" id="quizSid" placeholder="20261234" inputmode="numeric"></div>
+      <div class="info-field"><label>성명</label><input type="text" id="quizName" placeholder="홍길동"></div>
+      <div class="info-field"><label>제출일</label><input type="date" id="quizDate"></div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button type="button" class="tb-btn" id="btnSave">💾 저장하기</button>
+    <button type="button" class="tb-btn" id="btnLoad">↩ 불러오기</button>
+    <button type="button" class="tb-btn primary" id="btnGrade">✅ 채점하기</button>
+    <button type="button" class="tb-btn" id="btnPdf">📄 PDF로 저장</button>
+    <button type="button" class="tb-btn google" id="btnGoogle">☁ Google Sheets 제출</button>
+    <span class="tb-status" id="saveStatus">자동저장 대기 중</span>
+  </div>
+
+  <div class="progress-label"><span>응답 진행률</span><span id="progressPct">0%</span></div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+  <div class="google-state" id="googleState"></div>
+
+  <div class="score-banner" id="scoreBanner">
+    <div class="big" id="scoreBig">0점</div>
+    <div class="sub" id="scoreSub">아직 채점 전입니다.</div>
+  </div>
+
+  <div class="section-label">1교시 · 기업은 왜 사람을 관리해야 하는가</div>
+  <div id="quizList"></div>
+
+  <div class="foot">경영정보학과 · 인적자원관리(키스톤디자인) · 2026학년도 2학기 · 2주차 확인학습</div>
+</div>
+
+<script id="quiz-data-script">
+const QUIZ_DATA = [
+  {type:'mc', tag:'HRM 핵심기능', q:'다음 중 HRM(인적자원관리)의 핵심 기능 5가지에 해당하지 않는 것은?',
+   options:['확보(채용)','개발(교육·훈련)','평가·보상','유지(안전·관계)','생산라인 자동화'],
+   answer:4, explain:'HRM의 핵심 기능은 확보·개발·평가·보상·유지 5가지입니다. 생산라인 자동화는 생산관리·기술 영역에 해당합니다.'},
+
+  {type:'mc', tag:'사람의 특성', q:'"기업에는 돈·설비·기술도 있는데, 왜 유독 사람은 따로 관리해야 하는가"에 대한 답으로 강의에서 제시한 사람의 특성이 아닌 것은?',
+   options:['능동성','개발가능성','소진성','존엄성','표준화 가능성'],
+   answer:4, explain:'강의에서 제시한 사람의 네 가지 특성은 능동성·개발가능성·소진성·존엄성입니다. 설비·기술처럼 "표준화해서 그대로 복제·구매"할 수 있는 성질은 사람에게는 해당하지 않습니다.'},
+
+  {type:'mc', tag:'사례 적용', q:'"6개월째 야근하던 팀원이 갑자기 퇴사했다"는 사례는 사람의 어떤 특성과 가장 관련이 깊습니까?',
+   options:['능동성','개발가능성','소진성','존엄성'],
+   answer:2, explain:'과도한 업무부담·부적절한 근무환경이 지속되면 신체적·심리적으로 소진될 수 있다는 소진성에 해당합니다. 업무설계·안전·건강·워라밸로 예방·유지관리해야 합니다.'},
+
+  {type:'mc', tag:'사례 적용', q:'"입사한 지 1년밖에 안 된 신입이 최고 실적을 냈다"는 사례는 사람의 어떤 특성을 가장 잘 보여줍니까?',
+   options:['능동성','개발가능성','소진성','존엄성'],
+   answer:1, explain:'학습·경험·도전·협업을 통해 역량이 성장할 수 있다는 개발가능성입니다. 교육·경력개발로 성장시킬 수 있는 자원이라는 의미입니다.'},
+
+  {type:'mc', tag:'HRM 전체 지도', q:'강의에서 소개한 "HRM 전체 지도"의 설명으로 옳은 것은?',
+   options:[
+     '채용 하나만 잘하면 나머지는 저절로 따라온다',
+     '직무·인력계획부터 모집·선발·배치, 온보딩, 교육·훈련, 성과관리, 보상, 유지, 이동·퇴직까지 사람이 조직에 들어와 성장하고 떠나기까지 전 과정을 다룬다',
+     'HRM은 채용과 평가 두 가지 기능만 다룬다',
+     'HRM은 인사팀만 담당하며 다른 부서와는 무관하다'],
+   answer:1, explain:'HRM은 채용만 배우는 과목이 아니라, 사람이 들어와 성장하고 성과를 내고 머물거나 이동하는 전 과정을 연결하는 시스템입니다.'},
+
+  {type:'fill', tag:'HRM 전체 지도', q:'HRM 전체 지도에서 "모집·선발·배치" 다음, "교육·훈련·경력개발" 이전에 오는, 새로 입사한 구성원이 조직과 직무에 빠르게 적응하도록 돕는 단계의 이름을 한 단어로 쓰시오.',
+   accept:['온보딩','onboarding','Onboarding','On-boarding'],
+   explain:'정답은 "온보딩"입니다. 조직문화·업무방식 이해, 담당 직무 명확화, 관계 형성, 시스템 사용법 익히기 등을 지원하는 과정으로, 단순한 신입사원 오리엔테이션보다 넓은 개념입니다.'},
+
+  {type:'mc', tag:'수평적 정합성', q:'"협업을 강조하는 회사"가 신입을 뽑을 때는 "팀워크 면접"을 보면서, 정작 평가는 "개인 영업실적 100%"로만 하고 보상도 "개인 인센티브"로만 준다면 어떤 문제가 생깁니까?',
+   options:[
+     '문제없다. 채용과 평가는 원래 다른 기준을 써야 한다',
+     '채용에서 내세운 가치(협업)와 실제로 평가·보상하는 기준(개인 실적)이 어긋나 직원이 결국 개인 경쟁을 선택하게 된다',
+     '평가 기준이 지나치게 엄격해서 생기는 문제일 뿐, 정합성과는 무관하다',
+     '이 경우는 수직적 정합성 문제이지 수평적 정합성 문제가 아니다'],
+   answer:1, explain:'채용·교육·평가·보상 같은 HR 기능끼리 서로 맞지 않는 것을 수평적 정합성 문제라고 합니다. 회사가 내세운 인재상과 실제로 보상하는 행동이 다르면, 직원은 결국 보상받는 쪽으로 행동합니다.'},
+
+  {type:'mc', tag:'수직적 정합성', q:'"AI 기반 신사업 확대"를 전략으로 내세운 기업이 여전히 "기존 업무 경험만 중시"하는 채용, "AI 교육 없음", "새로운 시도보다 실수 없음을 중시하는 평가", "연공 중심 보상"을 유지하고 있다면 이는 무엇의 문제입니까?',
+   options:['수평적 정합성 문제','수직적 정합성 문제','조직문화 문제일 뿐 HRM과는 무관','단순한 예산 부족 문제'],
+   answer:1, explain:'조직의 전략과 HR 제도(채용·교육·평가·보상)가 같은 방향을 향하지 않는 것이 수직적 정합성 문제입니다. "이 회사가 원한다는 것"과 "실제로 보상하는 것"이 다르면 전략 실행이 어려워집니다.'},
+
+  {type:'mc', tag:'SHRM', q:'HR 기능끼리도 서로 맞아야 하고(수평적 정합성), 기업이 가는 방향과도 맞아야 한다(수직적 정합성)는 관점을 무엇이라고 부릅니까?',
+   options:['직무분석(Job Analysis)','전략적 인적자원관리(SHRM)','조직개발(OD)','노사관계관리(ER)'],
+   answer:1, explain:'수평·수직 정합성을 모두 고려하는 관점을 전략적 인적자원관리, 즉 SHRM(Strategic HRM)이라고 부릅니다.'},
+
+  {type:'mc', tag:'기업·산업·직무 구분', q:'"카카오 · 정보통신/플랫폼 · 서비스기획" 세 단어 중 "직무"에 해당하는 것은?',
+   options:['카카오','정보통신/플랫폼','서비스기획','셋 다 직무이다'],
+   answer:2, explain:'기업은 "어디에서"(카카오), 산업은 "어떤 시장에서"(정보통신·플랫폼), 직무는 "무슨 일을"(서비스기획) 하는지를 나타냅니다.'},
+
+  {type:'mc', tag:'기업·산업·직무 구분', q:'"삼성전자 / 제조업 / 데이터분석" 중 "직무"에 해당하는 것은?',
+   options:['삼성전자','제조업','데이터분석','삼성전자와 제조업 둘 다'],
+   answer:2, explain:'삼성전자=기업, 제조업=산업, 데이터분석=직무입니다. "삼성전자에 가고 싶다"는 기업 선택이지 직무 선택이 아닙니다.'},
+
+  {type:'mc', tag:'O/X 판단', q:'"같은 직무명이면 기업이 달라도 주요업무와 요구역량은 거의 같다." 이 문장은 옳은가?',
+   options:['O — 직무명이 같으면 하는 일도 거의 같다','X — 산업·조직 맥락·전략에 따라 주요업무와 요구역량이 달라진다'],
+   answer:1, explain:'같은 "HR" 직무라도 제조업·IT기업·호텔서비스업·공공기관에 따라 실제로 하는 일과 요구 역량이 크게 달라집니다. 직무명만 보고 진로를 결정해서는 안 됩니다.'},
+
+  {type:'fill', tag:'표현의 정확성', q:'"나는 IT에 관심이 있다"라는 표현이 진로탐색 관점에서 부정확한 이유를, 오늘 배운 세 가지 구분(기업/산업/직무) 중 어떤 수준에 머물러 있기 때문인지 한 단어로 쓰시오.',
+   accept:['산업','산업수준','산업 수준'],
+   explain:'"IT"는 산업 수준의 표현입니다. "나는 서비스기획 직무에 관심 있다"처럼 직무 수준까지 구체화해야 실제 진로탐색에 도움이 됩니다.'},
+
+  {type:'mc', tag:'HRM 변화 동인', q:'강의에서 제시한 "HRM을 계속 바꾸는 네 가지 힘"에 해당하지 않는 것은?',
+   options:['Technology(기술)','People(구성원)','Work(일하는 방식)','Rules(법·제도·공정성)','Capital(자본 조달 방식)'],
+   answer:4, explain:'HRM을 바꾸는 네 가지 힘은 Technology·People·Work·Rules입니다. 기업환경이 바뀌면 일이 바뀌고, 필요한 사람이 바뀌고, HRM도 바뀝니다.'},
+
+  {type:'fill', tag:'직무분석의 역할', q:'"조직전략 → ( ) → 채용=교육=평가=보상(서로 정합) → 조직 성과 + 구성원 경험"이라는 2주차 전체 요약 문장에서 괄호 안에 들어갈, 채용·교육·평가·보상 모두의 공통 근거자료가 되는 것은 무엇인지 쓰시오.',
+   accept:['직무분석','직무 분석'],
+   explain:'직무분석은 채용·교육·평가·보상 모두의 공통 근거자료이며, 이것이 부정확하면 그 위에 세운 채용·평가·보상 전부가 흔들리기 때문에 "HRM의 초석"이라고 부릅니다. 3주차에서 자세히 다룹니다.'}
+];
+</script>
+
+<script id="quiz-render-script">
+(function(){
+'use strict';
+
+const KEY_ANSWERS='hrm_w2_quiz_answers';
+const KEY_META='hrm_w2_quiz_meta';
+const GOOGLE_SCRIPT_URL='https://script.google.com/macros/s/AKfycbzh051njH2oS3pdbqs9MpTv7R9tTt5IxOzilJnQAFRW_5_g7uKMgkRNd00kR-QEdmmb/exec';
+
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function todayStr(){const d=new Date(),z=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}`;}
+
+const list=document.getElementById('quizList');
+QUIZ_DATA.forEach((item,i)=>{
+  const box=document.createElement('div');
+  box.className='quiz';
+  box.dataset.qi=i;
+  const num=i+1;
+  let body='';
+  if(item.type==='mc'){
+    body=`<div class="opts">`+item.options.map((op,oi)=>
+      `<label class="opt" data-oi="${oi}"><input type="radio" name="q${i}" value="${oi}">${esc(op)}</label>`
+    ).join('')+`</div>`;
+  }else{
+    body=`<div class="fill-wrap"><input type="text" placeholder="답을 입력하세요" data-qi="${i}"></div>`;
+  }
+  box.innerHTML=`
+    <div class="qhead">
+      <div class="qnum">${num}</div>
+      <div>
+        <div class="qtag">${esc(item.tag)}</div>
+        <div class="qtext">${esc(item.q)}</div>
+      </div>
+    </div>
+    ${body}
+    <div class="qfeedback"></div>`;
+  list.appendChild(box);
+});
+
+list.addEventListener('click',e=>{
+  const opt=e.target.closest('.opt');
+  if(!opt)return;
+  const box=opt.closest('.quiz');
+  box.querySelectorAll('.opt').forEach(o=>o.classList.remove('picked'));
+  opt.classList.add('picked');
+  const radio=opt.querySelector('input[type=radio]');
+  if(radio)radio.checked=true;
+  scheduleSave();
+  updateProgress();
+});
+list.addEventListener('input',e=>{
+  if(e.target.matches('input[type=text][data-qi]')){
+    scheduleSave();
+    updateProgress();
+  }
+});
+
+function collectAnswers(){
+  return QUIZ_DATA.map((item,i)=>{
+    const box=list.children[i];
+    if(item.type==='mc'){
+      const checked=box.querySelector('input[type=radio]:checked');
+      return checked?parseInt(checked.value,10):null;
+    }else{
+      const input=box.querySelector('input[type=text]');
+      return (input.value||'').trim();
+    }
+  });
+}
+function answeredCount(){
+  return collectAnswers().filter(a=>a!==null && a!=='').length;
+}
+function updateProgress(){
+  const total=QUIZ_DATA.length;
+  const done=answeredCount();
+  const pct=Math.round(done/total*100);
+  document.getElementById('progressBar').style.width=pct+'%';
+  document.getElementById('progressPct').textContent=pct+'%';
+  document.getElementById('progressText').textContent=`${done} / ${total} 완료`;
+}
+
+let saveTimer=null;
+function scheduleSave(){
+  const status=document.getElementById('saveStatus');
+  status.textContent='저장 중...';
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(saveNow,500);
+}
+function saveNow(){
+  try{
+    localStorage.setItem(KEY_ANSWERS,JSON.stringify(collectAnswers()));
+    localStorage.setItem(KEY_META,JSON.stringify({
+      sid:document.getElementById('quizSid').value,
+      name:document.getElementById('quizName').value,
+      date:document.getElementById('quizDate').value,
+      savedAt:new Date().toISOString()
+    }));
+    const status=document.getElementById('saveStatus');
+    status.textContent='저장됨 · '+new Date().toLocaleTimeString('ko-KR');
+  }catch(e){
+    document.getElementById('saveStatus').textContent='저장 실패 (브라우저 저장공간 확인)';
+  }
+}
+function loadNow(silent){
+  try{
+    const raw=localStorage.getItem(KEY_ANSWERS);
+    const metaRaw=localStorage.getItem(KEY_META);
+    if(!raw){
+      if(!silent)alert('저장된 답안이 없습니다. 먼저 문제를 풀고 저장해주세요.');
+      return;
+    }
+    const answers=JSON.parse(raw);
+    answers.forEach((a,i)=>{
+      const item=QUIZ_DATA[i];
+      const box=list.children[i];
+      if(!box)return;
+      if(item.type==='mc'){
+        if(a===null||a===undefined)return;
+        const opt=box.querySelector(`.opt[data-oi="${a}"]`);
+        if(opt){
+          opt.classList.add('picked');
+          opt.querySelector('input[type=radio]').checked=true;
+        }
+      }else{
+        const input=box.querySelector('input[type=text]');
+        if(input)input.value=a||'';
+      }
+    });
+    if(metaRaw){
+      const meta=JSON.parse(metaRaw);
+      if(meta.sid)document.getElementById('quizSid').value=meta.sid;
+      if(meta.name)document.getElementById('quizName').value=meta.name;
+      if(meta.date)document.getElementById('quizDate').value=meta.date;
+    }
+    updateProgress();
+    if(!silent)document.getElementById('saveStatus').textContent='불러오기 완료';
+  }catch(e){
+    if(!silent)alert('저장된 내용을 불러오지 못했습니다.');
+  }
+}
+
+function normalize(s){
+  return String(s||'').trim().toLowerCase().replace(/\s+/g,'');
+}
+function gradeAll(){
+  const answers=collectAnswers();
+  let correct=0;
+  QUIZ_DATA.forEach((item,i)=>{
+    const box=list.children[i];
+    const fb=box.querySelector('.qfeedback');
+    box.classList.remove('graded-correct','graded-wrong');
+    let isCorrect=false;
+    let userText='';
+    if(item.type==='mc'){
+      const a=answers[i];
+      isCorrect = a===item.answer;
+      userText = a===null? '미응답' : item.options[a];
+      box.querySelectorAll('.opt').forEach((opt,oi)=>{
+        opt.classList.remove('opt-correct','opt-wrong');
+        if(oi===item.answer)opt.classList.add('opt-correct');
+        else if(oi===a && !isCorrect)opt.classList.add('opt-wrong');
+      });
+    }else{
+      const a=answers[i];
+      userText = a===''? '미응답' : a;
+      isCorrect = item.accept.some(acc=>normalize(acc)===normalize(a));
+    }
+    if(isCorrect)correct++;
+    box.classList.add(isCorrect?'graded-correct':'graded-wrong');
+    const correctLabel = item.type==='mc'? item.options[item.answer] : item.accept[0];
+    fb.innerHTML = isCorrect
+      ? `<b>✓ 정답입니다.</b> ${esc(item.explain)}`
+      : `<b>✗ 다시 확인해보세요.</b> 내 응답: "${esc(userText)}" · 정답: "${esc(correctLabel)}"<br>${esc(item.explain)}`;
+  });
+  const total=QUIZ_DATA.length;
+  const pct=Math.round(correct/total*100);
+  const unanswered=answers.filter(a=>a===null||a==='').length;
+  showScore(correct,total,pct,unanswered);
+  saveNow();
+  return {correct,total,pct,unanswered,answers};
+}
+function encouragement(pct){
+  if(pct>=90)return '핵심개념과 개념 사이의 연결이 안정적으로 형성되어 있습니다. 정답을 외우기보다 오늘 배운 흐름을 화면 없이 설명해보세요.';
+  if(pct>=70)return '주요 개념은 잘 잡혀 있습니다. 오답이 나온 부분만 정의 → 차이 → 적용 순서로 다시 연결해보면 3주차 직무분석이 훨씬 수월해집니다.';
+  return '이번 결과는 부족함이 아니라 다시 볼 지점을 알려주는 학습기록입니다. 오답 해설을 하나씩 읽고, 특히 정합성·기업/산업/직무 구분 개념을 다시 정리해보세요.';
+}
+function showScore(correct,total,pct,unanswered){
+  const banner=document.getElementById('scoreBanner');
+  banner.classList.add('show');
+  document.getElementById('scoreBig').textContent=`${correct} / ${total} 정답 · ${pct}점`;
+  document.getElementById('scoreSub').textContent=
+    (unanswered? `미응답 ${unanswered}문항은 오답 처리되었습니다. · `:'')+encouragement(pct);
+  banner.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+document.getElementById('btnGrade').addEventListener('click',()=>gradeAll());
+document.getElementById('btnSave').addEventListener('click',saveNow);
+document.getElementById('btnLoad').addEventListener('click',()=>loadNow(false));
+
+document.getElementById('btnPdf').addEventListener('click',()=>{
+  if(!document.getElementById('scoreBanner').classList.contains('show')){
+    if(!confirm('아직 채점하지 않았습니다. 채점 없이 PDF로 저장하시겠습니까?'))return;
+  }
+  if(!document.getElementById('quizDate').value)document.getElementById('quizDate').value=todayStr();
+  window.print();
+});
+
+async function submitGoogle(){
+  const sid=document.getElementById('quizSid').value.trim();
+  const name=document.getElementById('quizName').value.trim();
+  const dateEl=document.getElementById('quizDate');
+  if(!sid){alert('Google 제출을 위해 학번을 입력해주세요.');document.getElementById('quizSid').focus();return;}
+  if(!name){alert('Google 제출을 위해 성명을 입력해주세요.');document.getElementById('quizName').focus();return;}
+  if(!dateEl.value)dateEl.value=todayStr();
+
+  const result=gradeAll();
+  if(result.unanswered){
+    if(!confirm(`미응답 ${result.unanswered}문항이 있습니다. 그래도 제출하시겠습니까?`))return;
+  }
+
+  const btn=document.getElementById('btnGoogle');
+  const stateEl=document.getElementById('googleState');
+  btn.disabled=true;
+  stateEl.className='google-state show sending';
+  stateEl.innerHTML='☁ <b>Google Sheets로 전송 중입니다.</b> 창을 닫지 마세요.';
+
+  const payload={
+    timestamp:new Date().toISOString(),
+    submitDate:dateEl.value,
+    week:2,
+    studentId:sid,
+    studentName:name,
+    totalQuestions:result.total,
+    correctCount:result.correct,
+    score:result.pct,
+    answers:QUIZ_DATA.map((item,i)=>({
+      questionNo:i+1,
+      tag:item.tag,
+      question:item.q,
+      studentAnswer: item.type==='mc'
+        ? (result.answers[i]===null? '미응답' : item.options[result.answers[i]])
+        : (result.answers[i]===''? '미응답' : result.answers[i]),
+      correctAnswer: item.type==='mc'? item.options[item.answer] : item.accept[0],
+      isCorrect: item.type==='mc'
+        ? result.answers[i]===item.answer
+        : item.accept.some(acc=>normalize(acc)===normalize(result.answers[i]))
+    }))
+  };
+
+  try{
+    localStorage.setItem('hrm_w2_google_pending_'+sid,JSON.stringify(payload));
+  }catch(e){}
+
+  try{
+    await fetch(GOOGLE_SCRIPT_URL,{
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(payload),
+      cache:'no-store',
+      keepalive:true
+    });
+    stateEl.className='google-state show sent';
+    stateEl.innerHTML=`☁ <b>Google 제출 요청을 전송했습니다.</b> · ${esc(sid)} ${esc(name)} · ${result.pct}점 · ${new Date().toLocaleString('ko-KR')}`
+      +`<br><span style="font-size:10px;">브라우저 보안정책상 Google의 응답 본문은 읽지 않습니다. 시트 반영까지 몇 초 걸릴 수 있습니다.</span>`;
+    try{localStorage.removeItem('hrm_w2_google_pending_'+sid);}catch(e){}
+    btn.textContent='✓ Google 전송완료';
+  }catch(err){
+    stateEl.className='google-state show error';
+    stateEl.innerHTML='⚠️ <b>Google 전송에 실패했습니다.</b> 결과는 이 브라우저에 임시 보관했습니다. 인터넷 연결을 확인한 뒤 같은 버튼을 다시 눌러주세요.';
+  }finally{
+    btn.disabled=false;
+  }
+}
+document.getElementById('btnGoogle').addEventListener('click',submitGoogle);
+
+if(!document.getElementById('quizDate').value)document.getElementById('quizDate').value=todayStr();
+document.addEventListener('DOMContentLoaded',()=>{});
+loadNow(true);
+updateProgress();
+})();
+</script>
+</body>
+</html>
