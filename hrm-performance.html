@@ -1,0 +1,1080 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+.mt td, .mt tbody th { font-size: 13.5px !important; vertical-align: top; } .mt tbody th { white-space: normal !important; min-width: 88px; }
+.ft td, .ft tbody th { font-size: 14.5px; line-height: 1.55; } .ft tbody th { white-space: nowrap; color: var(--gold); }
+.hg { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 8px; margin: 8px 0 4px; }
+.hg > div { border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: 8px; padding: 8px 12px; font-size: 14px; line-height: 1.55; background: var(--card); }
+.hg b { display: block; font-size: 12.5px; color: var(--gold); }
+.wulegend { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; margin-top: 10px; font-size: 13.5px; } .wulegend b { color: var(--navy); } .wulegend span { color: var(--muted); }
+:root[data-theme="dark"] .wulegend b { color: var(--gold); } @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .wulegend b { color: var(--gold); } }
+.wurow { display: flex; flex-direction: column; gap: 8px; padding: 10px 0; border-top: 1px dashed var(--line); }
+.wurow .wlab { display: block; width: 100%; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.wurow.mine { background: var(--tint); border-radius: 8px; padding-inline: 12px; border-top-color: transparent; }
+.wurow.mine .nm { color: var(--gold); }
+.wurow .nm { font-weight: 700; font-size: 14px; }
+.wurow .marks { flex-wrap: wrap; }
+.wurow .sub2 { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.dist { display: grid; grid-template-columns: 52px 1fr 40px; gap: 4px 8px; align-items: center; font-size: 13px; margin-top: 6px; }
+.dist .bar { height: 14px; border-radius: 3px; background: var(--gold); min-width: 2px; }
+.dist .bar.b2 { background: var(--navy); }
+:root[data-theme="dark"] .dist .bar.b2 { background: #9db4e6; } @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .dist .bar.b2 { background: #9db4e6; } }
+.rng { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; margin-top: 6px; }
+.rng b { font-variant-numeric: tabular-nums; }
+.qz { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.qz .qn { font-weight: 700; color: var(--gold); margin-right: 6px; }
+.qz .res { font-size: 13px; font-weight: 700; }
+.qz .res.ok { color: var(--ok); } .qz .res.no { color: var(--bad); }
+.lb { width: 100%; border-collapse: collapse; font-size: 14px; } .lb td, .lb th { padding: 6px 8px; border-top: 1px solid var(--line); text-align: left; } .lb tr.me td { background: var(--tint); font-weight: 700; }
+.pvbox { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.pvbox .from { font-size: 12.5px; font-weight: 700; color: var(--gold); }
+@media (max-width: 640px) { .wurow { grid-template-columns: 1fr; } .wurow .sub2 { grid-column: 1; } .dist { grid-template-columns: 44px 1fr 32px; } }
+</style></head><body>
+<title>HRM 성과관리 팀 워크시트</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: 상단 진도율 바 → 왜/흐름 → 팀 선택 → 단계 탭 → 단계마다 [핵심 개념 → 틀 · 예시 · 우리 팀] */
+:root {
+  --navy: #1b2a4a; --gold: #b98a3d; --bg: #f5f6f9; --card: #ffffff; --fg: #1d2433; --muted: #5d6679; --line: #dde1ea;
+  --tint: #f1ebdf; --mark: #f3e3c4; --ok: #2f7a55; --warn: #a3621b; --bad: #b2453b; --mon: #2f7a55; --tue: #6b4fa0;
+  --head: #1b2a4a; --head-fg: #ffffff; --onnavy: #ffffff;
+  --f-display: "IBM Plex Sans KR", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --f-body: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11161f; --card: #19202c; --fg: #e6e9f0; --muted: #9aa3b5; --line: #2b3444; --tint: #2a241a; --mark: #4a3b20;
+  --ok: #6cc394; --warn: #e0a659; --bad: #ec8a80; --mon: #6cc394; --tue: #b9a2e6; --head: #0d1526; --head-fg: #f2f4f8; --gold: #d2a65a; --navy: #2c4170; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #11161f; --card: #19202c; --fg: #e6e9f0; --muted: #9aa3b5; --line: #2b3444; --tint: #2a241a; --mark: #4a3b20;
+  --ok: #6cc394; --warn: #e0a659; --bad: #ec8a80; --mon: #6cc394; --tue: #b9a2e6; --head: #0d1526; --head-fg: #f2f4f8; --gold: #d2a65a; --navy: #2c4170; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 16px; line-height: 1.75; word-break: keep-all; overflow-wrap: anywhere; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--head); }
+.wrap { max-width: 980px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header.top { background: var(--head); color: var(--head-fg); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
+header.top .wrap { padding-block: 12px 10px; display: flex; flex-direction: column; gap: 8px; }
+.trow { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+h1 { font-family: var(--f-display); font-weight: 700; font-size: 1.15rem; margin: 0; text-wrap: balance; }
+.draft { font-size: 12px; border: 1px solid var(--gold); color: var(--gold); border-radius: 999px; padding: 0 8px; }
+.sync { font-size: 12px; opacity: .85; margin-left: auto; }
+.bar { height: 8px; background: rgba(255,255,255,.18); border-radius: 4px; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--gold); transition: width .3s; }
+.barlab { font-size: 12px; opacity: .9; font-variant-numeric: tabular-nums; }
+.barrow { display: flex; flex-wrap: wrap; gap: 4px 12px; justify-content: space-between; }
+.mytask { font-size: 12px; font-weight: 700; color: var(--gold); }
+main.wrap { padding-block: 20px 48px; display: flex; flex-direction: column; gap: 20px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 22px 24px; min-width: 0; }
+h2 { font-family: var(--f-display); font-size: 1.25rem; font-weight: 700; margin: 4px 0 8px; line-height: 1.4; text-wrap: balance; }
+.sub { color: var(--muted); font-size: 14px; margin: 0; max-width: 72ch; }
+.eyebrow { font-size: 12px; letter-spacing: .04em; color: var(--gold); font-weight: 700; }
+button:focus-visible, textarea:focus-visible, input:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.why { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 12px; }
+.why > div { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.why b { font-size: 14px; } .why span { font-size: 13px; color: var(--muted); line-height: 1.65; }
+.mini { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.mini li { font-size: 13px; padding: 5px 12px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); color: var(--muted); }
+.mini li.past { color: var(--fg); } .mini li.now { background: var(--navy); color: var(--onnavy); border-color: var(--navy); font-weight: 700; }
+.mini li:not(:last-child)::after { content: "›"; margin-left: 8px; color: var(--gold); }
+.days { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.day { border-radius: 8px; padding: 10px 14px; border: 1px solid var(--line); font-size: 14px; }
+.day b { display: block; } .day.mon b { color: var(--mon); } .day.tue b { color: var(--tue); }
+@media (max-width: 640px) { .days { grid-template-columns: 1fr; } }
+.teams { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-top: 10px; }
+.teams button { font: inherit; text-align: left; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--fg); cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
+.teams button[aria-pressed="true"] { border-color: var(--navy); box-shadow: inset 0 0 0 2px var(--gold); }
+.teams b { font-size: 14px; } .teams small { color: var(--muted); font-size: 12px; line-height: 1.4; }
+.notice { font-size: 15px; padding: 10px 14px; border-left: 3px solid var(--warn); background: var(--tint); border-radius: 4px; margin: 10px 0 0; line-height: 1.75; }
+.state { font-size: 15px; margin: 8px 0 0; }
+.tnrow { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; margin: 2px 0 10px; }
+.tnrow label { font-weight: 700; font-size: 14px; }
+.tnrow input { font: inherit; font-size: 16px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--fg); width: 220px; max-width: 100%; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.clab { font-size: 12px; color: var(--muted); margin-right: 2px; }
+.chip { font: inherit; font-size: 13px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--muted); cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: var(--onnavy); }
+.wuothers { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 6px; } .wuo { border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; font-size: 13px; display: flex; flex-direction: column; gap: 2px; } .wlab2 { font-size: 12.5px; font-weight: 700; color: var(--muted); margin: 10px 0 4px; }
+.ckb { margin-top: 6px; font-size: 12px; padding: 3px 8px; } .ckrow > td { padding-top: 0; border-top: 0; } .ckbox { flex-direction: row; flex-wrap: wrap; } .ckbox { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; } .ckbox input { font-size: 12.5px; width: 100%; } .ckrow .ckbox { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: start; } .ckrow .ckbox > :not(.ckb) { grid-column: 1 / -1; } .ckg { font-size: 12px; font-weight: 500; } .ckg summary { color: var(--gold); font-weight: 700; cursor: pointer; } .ckg ol { margin: 4px 0 0; padding-left: 1.1rem; } .cknote { font-size: 12.5px; color: var(--warn); font-weight: 600; margin: 0; } 
+.slotctl { width: 100%; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 4px; } .slotctl .btn { font-size: 12px; padding: 3px 8px; }
+.orph { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; color: var(--warn); border: 1px dashed var(--warn); border-radius: 8px; padding: 8px 10px; }
+.svgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; margin-top: 8px; } .svbox { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; min-width: 0; } .svbox.wide { margin-top: 8px; width: 100%; } .svbox > b { font-size: 14px; } .svbox > * { max-width: 100%; } .svbox .tw { width: 100%; overflow-x: auto; } .svbox .tools { flex-wrap: wrap; }
+.rowown { margin-top: 6px; font-size: 11.5px; font-weight: 600; color: var(--muted); } .rowown.mine { color: var(--gold); font-weight: 800; }
+tr.minerow > th, tr.minerow > td { background: var(--tint); }
+.chip.slot { color: var(--muted); } .chip.slot b { font-weight: 700; margin-right: 2px; } .chip.slot.taken { color: var(--fg); }
+.chip.slot[aria-pressed="true"], .chip.slot[aria-pressed="true"] b { color: var(--onnavy); }
+.chip.chk[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: #1b2a4a; }
+.mepick { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 12px; border-radius: 8px; background: var(--tint); }
+.mepick .melab { font-size: 13px; font-weight: 700; }
+nav.steps { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
+nav.steps button { font: inherit; font-size: 13px; white-space: nowrap; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--muted); cursor: pointer; display: flex; gap: 6px; align-items: center; }
+nav.steps button[aria-selected="true"] { background: var(--navy); color: var(--onnavy); border-color: var(--navy); }
+nav.steps .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line); } nav.steps .dot.done { background: var(--gold); }
+nav.steps .dd { font-size: 11px; font-weight: 700; } nav.steps .dd.mon { color: var(--mon); } nav.steps .dd.tue { color: var(--tue); }
+nav.steps button[aria-selected="true"] .dd { color: var(--onnavy); opacity: .85; }
+nav.steps .mine { font-size: 11px; background: var(--gold); color: #1b2a4a; border-radius: 999px; padding: 0 6px; font-weight: 700; }
+.stagehead { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
+.daytag { font-size: 12px; font-weight: 700; border-radius: 999px; padding: 1px 10px; border: 1px solid currentColor; }
+.daytag.mon { color: var(--mon); } .daytag.tue { color: var(--tue); }
+.concept { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; padding: 14px 16px; background: var(--tint); border-left: 4px solid var(--gold); border-radius: 8px; margin: 10px 0 0; font-size: 15px; line-height: 1.8; }
+.concept b { color: var(--gold); white-space: nowrap; font-size: 14px; }
+@media (max-width: 640px) { .concept { grid-template-columns: 1fr; gap: 2px; } }
+.item { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+.where { font-size: 15px; font-weight: 700; }
+.lead { font-size: 14px; color: var(--muted); margin: 0; }
+.row { display: grid; grid-template-columns: 96px 1fr; gap: 10px; align-items: start; }
+.row > .tagc { font-size: 12px; font-weight: 700; color: var(--muted); padding-top: 3px; }
+.pat { margin: 0; font-size: 15px; line-height: 1.85; }
+.pat mark { background: var(--mark); color: var(--fg); padding: 1px 4px; border-radius: 3px; }
+.ex { margin: 0; font-size: 15px; line-height: 1.75; padding: 8px 12px; border-left: 3px solid var(--ok); background: var(--bg); border-radius: 4px; }
+@media (max-width: 640px) { .row { grid-template-columns: 1fr; gap: 4px; } }
+textarea, input[type=text], select { width: 100%; font: inherit; font-size: 15px; line-height: 1.6; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--card); color: var(--fg); }
+textarea { resize: vertical; min-height: 66px; }
+.tools { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 6px; }
+.btn { font: inherit; font-size: 13px; padding: 5px 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--card); color: var(--fg); cursor: pointer; }
+.btn.primary { background: var(--navy); color: var(--onnavy); border-color: var(--navy); }
+.who { font-size: 12px; color: var(--muted); margin-left: auto; }
+label.chk { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; cursor: pointer; }
+.okmark { color: var(--ok); }
+.tw { overflow-x: auto; }
+table.g { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 640px; }
+table.g th, table.g td { text-align: left; vertical-align: top; padding: 8px; border-bottom: 1px solid var(--line); }
+table.g thead th { font-size: 12px; color: var(--muted); font-weight: 700; border-bottom: 2px solid var(--line); }
+table.g tbody th { font-size: 13px; white-space: nowrap; color: var(--fg); }
+table.g tr.exr td { color: var(--muted); font-size: 13px; background: var(--bg); }
+table.g textarea { min-height: 54px; font-size: 14px; }
+.kt { display: inline-block; font-size: 11px; font-weight: 700; padding: 0 7px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); }
+.marks { display: flex; gap: 4px; flex-wrap: wrap; }
+.mk { font: inherit; font-size: 13px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--fg); cursor: pointer; white-space: nowrap; }
+.mk[aria-pressed="true"].ok { background: var(--ok); border-color: var(--ok); color: #fff; }
+.mk[aria-pressed="true"].mid { background: var(--warn); border-color: var(--warn); color: #fff; }
+.mk[aria-pressed="true"].no { background: var(--bad); border-color: var(--bad); color: #fff; }
+.preview { font-size: 15px; line-height: 1.8; padding: 10px 12px; border: 1px dashed var(--gold); border-radius: 6px; background: var(--bg); }
+.out { white-space: pre-wrap; font-size: 13px; line-height: 1.7; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; }
+details.stuck > summary { cursor: pointer; font-size: 14px; color: var(--warn); font-weight: 600; }
+details.stuck ul { margin: 6px 0 0; padding-left: 1.3rem; font-size: 14px; line-height: 1.8; }
+details.owners > summary { cursor: pointer; font-size: 13px; color: var(--muted); }
+.warnline { font-size: 12px; color: var(--warn); }
+.gate { font-size: 13px; color: var(--muted); } .gate.ok { color: var(--ok); }
+.board { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; margin-top: 12px; }
+.mem { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; min-width: 0; font-size: 13px; }
+.mem.me { border: 2px solid var(--gold); background: var(--tint); }
+.mem .nm { font-weight: 700; font-size: 14px; } .mem .rl { font-size: 12px; color: var(--muted); }
+.mem ul { margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.mem.vacant { border-style: dashed; } .mem.vacant .nm { color: var(--muted); }
+.mem .mtop { display: flex; flex-direction: column; gap: 1px; }
+.msum { display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; align-items: center; font-size: 12px; color: var(--muted); padding: 4px 0 6px; border-bottom: 1px solid var(--line); }
+.msum > span:nth-child(3), .msum > span:nth-child(4) { grid-column: 1 / -1; }
+.mbar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; } .mbar span { display: block; height: 100%; background: var(--gold); }
+.stt { display: inline-block; min-width: 52px; text-align: center; font-size: 11px; font-weight: 700; border-radius: 4px; padding: 1px 4px; margin-right: 4px; }
+.stt.ok { border: 1px solid var(--ok); color: var(--ok); } .stt.mid { border: 1px solid var(--warn); color: var(--warn); } .stt.no { border: 1px solid var(--line); color: var(--muted); }
+.chain { display: flex; flex-direction: column; margin-top: 10px; }
+.chain .link { display: grid; grid-template-columns: 130px 1fr; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.chain .link b { color: var(--muted); font-size: 13px; } .chain .link.now b { color: var(--gold); }
+@media (max-width: 640px) { .chain .link { grid-template-columns: 1fr; gap: 2px; } }
+.rm tr.now > th, .rm tr.now > td { background: var(--tint); } .rm td .chips { gap: 4px; } .rm .chip { font-size: 12px; padding: 2px 8px; }
+.rmroles { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 8px; margin-bottom: 10px; } .rmrole { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; font-size: 13.5px; }
+.fblock { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin-top: 8px; }
+.fblock ol { margin: 4px 0 0; padding-left: 1.3rem; font-size: 14px; line-height: 1.7; color: var(--muted); }
+.fblock li.now { color: var(--fg); } .fblock li.now b { color: var(--ok); }
+.ov { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px; }
+.ov th, .ov td { text-align: left; padding: 8px 10px; border-top: 1px solid var(--line); vertical-align: top; }
+.ov th { font-size: 12px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+.ov td.n { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ov .ok { color: var(--ok); font-weight: 600; } .ov .no { color: var(--muted); }
+.pbar { display: block; height: 6px; border-radius: 3px; background: var(--line); margin-top: 4px; min-width: 64px; }
+.pbar i { display: block; height: 100%; border-radius: 3px; background: var(--gold); }
+.empty { color: var(--muted); font-size: 14px; padding: 24px 0; text-align: center; }
+details.season > summary { font-size: 13px; color: var(--gold); cursor: pointer; font-weight: 600; margin-top: 10px; }
+@media (max-width: 640px) { header.top .wrap { padding-block: 8px 6px; gap: 4px; } h1 { font-size: 1rem; } .card { padding: 18px 16px; } }
+@media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="trow"><h1>교육훈련 → 성과관리 · 인사평가 팀 워크시트</h1><a href="#ovcard" class="ovlink" style="font-size:12px;color:inherit;opacity:.9;margin-left:auto;text-decoration:underline">전체 팀 현황 보기</a><span class="sync" id="sync" style="margin-left:12px">연결 중…</span></div>
+    <div class="bar" aria-hidden="true"><i id="barfill"></i></div>
+    <div class="barrow"><div class="barlab" id="barlab">팀을 고르면 진행률이 보입니다</div><div class="mytask" id="mytask"></div></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="card">
+    <span class="eyebrow">오늘의 질문</span>
+    <h2>우리가 뽑고 키운 신입이 "일을 잘했다"는 것은 무엇으로 알 수 있나?</h2>
+    <div class="why">
+      <div><b>평가 기준이 있어야 AI에게도 일을 맡길 수 있습니다</b><span>"잘했다"의 기준을 말로 정할 수 있어야, 사람이 한 일이든 AI가 도운 일이든 결과를 판단할 수 있습니다.</span></div>
+      <div><b>평가는 점수 매기기가 아니라 관리의 한 단계</b><span>목표를 정하고 → 중간에 피드백하고 → 평가하고 → 결과를 개발·보상에 쓰는 전 과정이 성과관리입니다.</span></div>
+      <div><b>오늘 정한 기준이 다음 주 보상의 출발점</b><span>평가 기준이 흐릿하면 보상도 공정할 수 없습니다. 마지막 단계에서 보상관리로 넘길 것을 정합니다.</span></div>
+    </div>
+    <ol class="mini" aria-label="팀 프로젝트 흐름">
+      <li class="past">직무분석</li><li class="past">채용관리</li><li class="past">교육훈련</li><li class="now">성과관리</li><li>보상·복리후생</li><li>경력개발</li><li>조직문화</li><li>다양성·포용</li>
+    </ol>
+    <div class="days">
+      <div class="day mon"><b>11/9(월) · ①~③단계</b>개념 복습 → 핵심 업무 고르기 → 성과기준 → 성과지표 4종</div>
+      <div class="day tue"><b>11/10(화) · ④~⑥단계</b>평가 방법과 오류 → AI 제안 검증 → 보상으로 넘길 것 · PDF 저장</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <span class="eyebrow">시작하기</span>
+    <h2>우리 팀을 누르세요</h2>
+    <p class="sub">팀을 누르고 → 아래 '나는'에서 내 이름을 누르면 → 내가 맡은 칸에 '내 칸' 표시가 붙습니다. 한 사람이 쓴 내용은 같은 팀원 화면에 바로 나타납니다.</p>
+    <div class="teams" id="teams"></div>
+  </section>
+
+  <section class="card" id="teamcard" hidden>
+    <span class="eyebrow" id="tjobtag"></span>
+    <h2 id="tname"></h2>
+    <div class="tnrow"><label for="tnin">팀 이름</label><input id="tnin" maxlength="20" autocomplete="off"><span class="clab">바꾸면 진행표·PDF 이름에 반영됩니다.</span></div>
+    <p class="state" id="tjob"></p>
+    <p class="notice" id="tnow"></p>
+    <div class="mepick" style="margin-top:12px"><span class="melab">나는</span><div class="chips" id="mepick"></div></div>
+    <details class="season" open><summary>우리 팀 진행 현황 — 누가 무엇을 맡았고, 얼마나 했나</summary><div class="board" id="board"></div></details>
+    <details class="season"><summary>우리 팀 연결선 — 직무분석부터 보상까지</summary><div class="chain" id="tchain"></div></details>
+  </section>
+
+  <nav class="steps" id="steps" role="tablist" aria-label="단계" hidden></nav>
+  <section class="card" id="stage" hidden></section>
+  <p class="empty" id="emptymsg">위에서 우리 팀을 고르세요.</p>
+  <section class="card" id="savecard" hidden></section>
+
+  <section class="card" id="ovcard" hidden>
+    <span class="eyebrow">전체 팀 진행 현황 · 점수가 아니라 진행 확인용</span>
+    <h2>팀별 진행 상태</h2>
+    <p class="sub">칸이 채워졌는지만 셉니다. 내용의 질은 판단하지 않습니다.</p>
+    <div class="tw"><table class="ov" id="ovtable"></table></div>
+  </section>
+</main>
+
+<script>
+(() => {
+  // ---------------- 팀 (11/3 교육훈련 워크시트 명단 · 11/3 저장 기록 + 회계1팀 11/4 직무분석·Staffing 파일 기준) ----------------
+  const TEAMS = [
+    { key: 't1', label: '마케팅2팀', job: 'mkt', jobline: '유니클로 · 브랜드 마케터 (신입이 맡는다고 가정)', now: '교육훈련에서 기준(신입 가정)과 입사 후 개발 KSAO를 정했습니다. 오늘은 그 직무의 핵심 업무 하나(시즌 캠페인 기획·실행)를 골라 "잘했다"의 기준부터 씁니다.', members: [['m1', '진행·시간관리'], ['m2', '근거검증'], ['m3', '정합성·공정성 검토'], ['m4', '기록·제출관리'], ['m5', '기록·제출관리']] },
+    { key: 't2', label: '데이터분석', job: 'data', alts: [['dataset', '학습 데이터 설계·구축', '11/3 교육훈련 워크시트 기준'], ['analyst', '데이터 분석가', '이전 피드백 기준']], jobline: '네이버 · Tech–Data 신입', now: '교육훈련 워크시트에서 기준직무를 "학습 데이터 설계·구축(데이터셋 품질 검증)"으로 적었습니다. 지난 피드백의 "데이터 분석가"와 다르니, ①단계에서 둘 중 하나로 정하고 그 직무의 업무 하나로 시작합니다.', members: [['m1', '진행 · 기록'], ['m2', '근거검증'], ['m3', '정합성·공정성 검토'], ['m4', '역할 미정'], ['m5', '역할 미정']] },
+    { key: 't3', label: '재무회계', job: 'acct', jobline: '이촌회계법인 · 본점 신입 공인회계사 (KICPA 합격자 대상 공고)', now: '11/3~11/4에 직무분석·Staffing 파일의 기준을 "이촌회계법인 신입 공인회계사"로 정했습니다(EY한영 A안·B안은 쓰지 않습니다). Staffing에서 입사 후 개발로 넘긴 "감사조서 작성·감사 절차(S)"와 직무과제로 제안한 "재무제표 수치 검토·계정 대사"에서 출발해, 신입이 선임 지도 아래 하는 업무 하나로 시작합니다. 교육훈련 워크시트에는 역할 배정만 저장되어 있으니 ④번 칸은 [교육훈련 미작성]으로 둡니다.', members: [['m1', '진행·시간관리'], ['m2', '근거검증'], ['m3', '근거검증'], ['m4', '정합성·공정성 검토'], ['m5', '기록·제출관리']] },
+    { key: 't4', label: '마켓컬리팀', job: 'mkt', jobline: '나이키 · 브랜드 마케팅 (신입이 맡는다고 가정)', now: '교육훈련 워크시트에 저장된 기록이 없습니다. 교육훈련 파일에서 마케팅 기준으로 고친 KSAO(예: 멤버십 데이터로 캠페인 성과 분석)에서 출발해, 그 일을 하는 업무 하나를 고릅니다. 영업관리 업무로 쓰지 않습니다.', members: [['m1', '진행·시간관리'], ['m2', '근거검증'], ['m3', '정합성·공정성 검토'], ['m4', '기록·제출관리']] },
+    { key: 't5', label: '미래선도', job: 'log', alts: [['lognet', '물류 네트워크 기획·최적화', '교육훈련 워크시트 기준'], ['log', '물류센터·배송 운영', '직무분석 기준']], jobline: 'CJ대한통운 · SCM 신입', now: '교육훈련 워크시트에서 직무를 "물류 네트워크 기획·최적화"로 적었는데, 지난 기준은 "물류센터·배송 운영"이었습니다. ①단계 첫 칸에서 하나로 정합니다. 개발 KSAO에 A(능력)를 넣은 것도 성과기준에서는 "관찰할 수 있는 행동"으로 바꿔 씁니다.', members: [['m1', '진행'], ['m2', '근거확인'], ['m3', '자료조사'], ['m4', '기록']] },
+    { key: 't6', label: '유통1팀', job: 'md', jobline: '쿠팡 · 상품기획(MD) (신입이 맡는다고 가정)', now: '교육훈련 ①단계는 "쿠팡 MD"로 고쳤지만 ②단계 첫 칸에 "마켓컬리 유통물류"라고 적혀 있습니다. 오늘은 쿠팡 MD 하나로 맞추고, MD의 핵심 업무(주간 발주안)로 시작합니다.', members: [['m1', '진행·시간관리'], ['m2', '근거검증'], ['m3', '정합성·공정성 검토'], ['m4', '기록·제출관리']] },
+    { key: 't7', label: '밸류파인더', job: 'fin', jobline: '한국투자증권 · 리서치 애널리스트 신입(RA)', now: '교육훈련에서 기준(리서치 RA)과 입사 후 개발 KSAO(회사 양식 실적 추정 모델)를 정했습니다. 그 업무(실적 추정 시트 업데이트)를 오늘의 핵심 업무로 바로 씁니다.', members: [['m1', '진행·기록'], ['m2', '근거검증']] },
+  ];
+
+  // ---------------- 직무별 예시 [업계 일반 · 가상] — 비교 기준, 그대로 옮기지 않음 ----------------
+  const JOBS = {
+    mkt: { name: '브랜드 마케터 (신입)',
+      task: '시즌 캠페인을 기획·실행하고 성과를 보고한다', out: '캠페인 기획서 · 주간 성과 리포트',
+      std: '시즌 캠페인 기획안을 본사 승인 양식에 맞춰 마감 1주 전까지 올리고, 캠페인 종료 후 1주 안에 목표 대비 성과와 다음 개선점을 보고한다',
+      kpi: { R: ['캠페인 목표 대비 전환율 달성도', '광고·자사몰 데이터 · 캠페인 종료 시', '목표 대비 90% 이상'], O: ['기한 내 제출한 기획안·리포트 비율', '승인 시스템 기록 · 분기', '기한 준수 100%'], B: ['캠페인 중간 점검 회의에서 수치로 조정안 제시', '회의록 · 캠페인마다', '캠페인마다 1회 이상'], Q: ['리포트 지표 오류로 인한 재작성 건수', '팀장 검토 기록 · 분기', '0건'] },
+      qual: ['"창의적으로 기획한다"', '"기획안마다 타깃·메시지·채널의 근거 데이터를 1개 이상 붙이고, 버린 대안과 이유를 함께 적는다"'],
+      bars: ['목표 미달 원인을 데이터로 찾아 다음 캠페인 계획에 반영하고, 다른 팀과 공유한다', '정해진 양식으로 기한 안에 보고하지만, 원인 분석 없이 수치만 나열한다', '보고가 늦거나 지표 정의가 틀려 다시 작성한다'],
+      ai: 'AI가 카피 시안 10개를 만들었다면, 시안 개수가 아니라 "브랜드 가이드에 맞는 하나를 고른 판단과 그 근거"를 평가한다',
+      hand: '"기한 준수 · 성과 보고의 질"은 기본급 인상(역량)과, "전환율 목표 달성"은 캠페인 성과급과 이어져야 한다 — 통제 못 하는 외부 요인(날씨·경쟁사 할인)은 어떻게 뺄까?' },
+    data: { name: '데이터 분석·데이터셋 담당 (신입)',
+      task: '요청받은 지표·데이터셋을 정의대로 만들고 품질을 검증한다', out: '검증된 데이터셋 · 분석 리포트',
+      std: '요청을 받으면 2영업일 안에 범위를 확정하고, 회사 지표 정의서대로 만든 결과물을 검증 체크리스트를 통과한 상태로 기한 안에 넘긴다',
+      kpi: { R: ['결과물이 의사결정·모델 개선에 쓰인 비율', '요청자 확인 · 분기', '요청의 80% 이상 활용'], O: ['기한 내 처리한 요청 건수 비율', '요청 관리 도구 기록 · 월', '90% 이상'], B: ['요청 접수 후 2영업일 내 범위 확정 회의', '캘린더·요청 기록 · 건마다', '100%'], Q: ['정의 오류로 인한 재작업 건수', '동료 코드·쿼리 리뷰 기록 · 월', '월 1건 이하'] },
+      qual: ['"꼼꼼하게 분석한다"', '"결과물을 넘기기 전 검증 체크리스트(건수 대조·정의 확인·이상값) 전 항목을 기록하고, 리뷰 수정 요청이 1회 이하다"'],
+      bars: ['요청 뒤의 진짜 질문을 다시 정의해 더 나은 지표를 제안하고, 한계와 데이터 편향을 함께 적는다', '정의대로 기한 안에 넘기지만, 이상값 확인이나 한계 설명이 빠질 때가 있다', '정의를 다르게 써서 다시 만들거나 기한을 넘긴다'],
+      ai: 'AI가 쿼리 초안을 썼다면 "쿼리를 직접 썼는가"가 아니라 "결과 건수·정의를 원자료와 대조해 틀린 것을 잡아냈는가"를 평가한다',
+      hand: '"재작업 0건·기한 준수"는 역량 보상과, "결과물이 의사결정에 쓰인 비율"은 팀 성과급과 이어져야 한다 — 요청자가 안 쓴 결과물은 누구 책임일까?' },
+    acct: { name: '회계감사 신입 공인회계사',
+      task: '선임 회계사 지도 아래 배정된 계정의 재무제표 수치를 원장·증빙과 대사하고 감사조서를 작성한다', out: '계정별 대사표 · 감사조서',
+      std: '배정된 계정의 대사와 감사조서를 현장 감사 일정 안에 끝내고, 발견한 불일치는 근거 자료와 함께 당일 보고하며, 선임 검토 수정 요청이 계정당 2건 이하다',
+      kpi: { R: ['담당 계정 감사 마감 일정 준수', '감사 일정표 · 감사 건마다', '일정 안에 완료'], O: ['배정 계정 중 감사조서 완성 비율', '감사조서 관리 기록 · 감사 건마다', '100%'], B: ['불일치를 발견하면 근거 자료와 함께 당일 선임에게 보고', '보고 기록 · 건마다', '발견 건 100% 당일 보고'], Q: ['선임 검토 수정 요청 건수', '검토 기록 · 감사 건마다', '계정당 2건 이하 → 1건 이하'] },
+      qual: ['"꼼꼼하다"', '"대사할 때 원장·증빙·재무제표 숫자를 모두 대조한 흔적을 조서에 남기고, 차이가 있으면 원인 후보와 확인할 자료를 함께 적는다"'],
+      bars: ['차이의 원인까지 증빙으로 확인해 조서에 남기고, 반복되는 오류 유형을 팀에 공유한다', '절차대로 대사하지만, 차이를 발견하면 원인 확인 없이 숫자만 보고한다', '대사 누락이나 조서 기록 부족으로 선임이 다시 확인한다'],
+      ai: '감사 솔루션·AI가 이상 거래를 골라 줬다면 "추천 목록을 그대로 썼는가"가 아니라 "추천에서 빠진 위험 계정을 스스로 찾고, 표본을 고른 이유를 조서에 남겼는가"를 평가한다',
+      hand: '"수정 요청 건수·조서 품질"은 역량 평가·연봉 등급과, "감사 일정 준수"는 팀 성과와 이어져야 한다 — 고객사가 자료를 늦게 줘서 생긴 지연은 신입의 성과에서 어떻게 뺄까?' },
+    md: { name: '상품기획 MD (신입)',
+      task: '판매 데이터를 보고 주간 발주안을 낸다', out: '주간 발주안 · 행사 계획',
+      std: '매주 월요일 10시까지 시스템 추천 발주량을 행사·시즌으로 보정한 발주안을 내고, 담당 카테고리 결품 품목을 2개 이하로 유지한다',
+      kpi: { R: ['담당 카테고리 결품률', '재고 시스템 · 주', '2% 이하'], O: ['기한 내 제출한 발주안 비율', '발주 시스템 기록 · 월', '100%'], B: ['추천 발주량을 바꿀 때 보정 이유를 기록', '발주안 메모 · 건마다', '보정 건 100% 기록'], Q: ['과다 발주로 인한 재고 폐기 금액', '재고 시스템 · 월', '전년 대비 감소'] },
+      qual: ['"시장 감각이 좋다"', '"행사·날씨·경쟁사 가격 중 1개 이상을 근거로 추천 발주량을 보정하고, 그 결과(결품·재고)를 다음 주에 되돌아본다"'],
+      bars: ['보정 근거와 결과를 매주 기록해 다음 시즌 발주 기준을 개선한다', '기한 안에 내지만 추천 수량을 거의 그대로 쓴다', '마감을 놓치거나 보정 근거 없이 수량을 바꿔 결품·과재고를 낸다'],
+      ai: '수요 예측 AI가 수량을 추천했다면 "추천을 따랐는가"가 아니라 "추천이 틀린 상황(행사·시즌)을 알아채고 근거 있게 고쳤는가"를 평가한다',
+      hand: '"결품률"은 카테고리 성과급과, "보정 기록 습관"은 역량 평가와 이어져야 한다 — 공급사 납품 지연으로 생긴 결품은 MD의 성과에서 뺄까?' },
+    log: { name: '물류센터·배송 운영 (신입)',
+      task: '배송 지연이 생기면 원인을 찾아 보고하고 조치한다', out: '일일 운영 현황 · 지연 보고서',
+      std: '배송 지연이 생기면 당일 18시까지 WMS·TMS 데이터로 원인 구간을 찾아 근거 1개 이상과 조치를 담은 지연 보고서를 낸다',
+      kpi: { R: ['담당 구역 정시 배송률', 'TMS · 주', '목표 대비 유지·개선'], O: ['당일 제출한 지연 보고서 비율', '보고 기록 · 월', '90% 이상'], B: ['작업 전 안전 점검표 작성', '점검표 · 일', '매일 100%'], Q: ['지연 원인 판단이 사후에 틀린 건수', '선임 검토 기록 · 월', '월 1건 이하'] },
+      qual: ['"현장 대응을 잘한다"', '"지연 발생 30분 안에 고객사에 1차 안내를 하고, 원인 구간 데이터를 붙여 당일 보고한다"'],
+      bars: ['반복 지연 구간을 데이터로 찾아 배차·작업 순서 개선안을 내고 효과를 확인한다', '당일 보고하지만 원인 근거가 없거나 추정에 머문다', '보고가 늦거나 원인 없이 "현장 사정"으로 적는다'],
+      ai: '시스템이 배차를 추천했다면 "추천대로 했는가"가 아니라 "추천이 맞지 않는 현장 예외를 알아채고 안전하게 조정했는가"를 평가한다',
+      hand: '"정시 배송률"은 팀 성과급과, "안전 점검·보고 습관"은 역량·승진 평가와 이어져야 한다 — 날씨·교통처럼 통제 못 하는 지연은 어떻게 다룰까?' },
+    fin: { name: '증권 리서치 RA (신입)',
+      task: '담당 기업 실적이 나오면 회사 양식의 추정 시트를 업데이트한다', out: '실적 추정 시트 · 보고서 초안 표',
+      std: '실적 공시 당일 17시까지 추정 시트를 공시 숫자와 맞춰 업데이트하고, 변경한 가정과 이유를 한 줄씩 남긴다(숫자 오류 0건)',
+      kpi: { R: ['선배 애널리스트가 보고서에 그대로 쓴 비율', '검토 기록 · 분기', '70% 이상'], O: ['공시 당일 업데이트 완료 비율', '시트 수정 기록 · 실적 시즌', '100%'], B: ['가정 변경 시 근거 메모 작성', '시트 메모 · 건마다', '변경 건 100%'], Q: ['원자료(공시)와 다른 숫자 건수', '선배 검토 · 실적 시즌', '0건'] },
+      qual: ['"분석력이 뛰어나다"', '"추정치를 바꿀 때마다 근거(공시 항목·산업 자료)를 적고, 시장 컨센서스와 차이가 크면 이유를 설명한다"'],
+      bars: ['원자료와 대조해 오류 0건으로 마감하고, 다음 분기 가정 개선안을 먼저 제안한다', '기한 안에 업데이트하지만 가정 변경 이유가 빠질 때가 있다', '공시 숫자와 다르거나 마감을 넘겨 선배가 다시 고친다'],
+      ai: 'AI가 공시를 요약했다면 "요약을 썼는가"가 아니라 "요약 속 숫자를 원 공시와 대조해 틀린 것을 잡았는가"를 평가한다 (준법: 미공개 정보 입력 금지)',
+      hand: '"숫자 오류 0건·기한 준수"는 역량 평가와, "보고서 활용 비율"은 팀 성과와 이어져야 한다 — RA의 기여를 애널리스트 성과와 어떻게 나눌까?' },
+    dataset: { name: '학습 데이터 설계·구축 (신입)',
+      task: '모델 학습용 데이터셋의 수집·라벨링 기준을 정하고 품질을 검증한다', out: '라벨링 가이드 · 검증된 학습 데이터셋',
+      std: '배정된 데이터셋마다 작업 시작 전에 라벨링 가이드를 확정하고, 표본 검수에서 팀 기준 라벨 일치율을 통과한 상태로 일정 안에 넘긴다',
+      kpi: { R: ['넘긴 데이터셋으로 학습한 모델의 평가 지표 변화', '모델팀 실험 기록 · 분기', '개선 또는 유지 (모델팀과 함께 판단)'], O: ['일정 안에 넘긴 데이터셋 비율', '작업 관리 도구 · 월', '90% 이상'], B: ['작업 시작 전 라벨링 가이드 검토 회의 진행', '회의 기록 · 데이터셋마다', '100%'], Q: ['표본 검수 라벨 일치율', '검수 기록 · 데이터셋마다', '팀 기준치 이상'] },
+      qual: ['"데이터를 꼼꼼히 만든다"', '"작업 전에 판단이 애매한 사례 5개 이상을 가이드에 예시로 넣고, 표본 검수 결과와 수정 내역을 기록한다"'],
+      bars: ['애매한 사례를 모아 가이드를 고치고, 데이터 편향(특정 집단이 적게 들어간 것 등)을 찾아 보고한다', '가이드대로 일정 안에 만들지만, 애매한 사례를 어떻게 처리했는지 기록하지 않는다', '가이드 없이 작업해 검수에서 다시 라벨링한다'],
+      ai: 'AI가 자동 라벨을 붙였다면 "자동 라벨을 썼는가"가 아니라 "자동 라벨이 틀리기 쉬운 사례를 골라 검수하고, 고친 근거를 남겼는가"를 평가한다',
+      hand: '"일정 준수 · 검수 통과"는 역량 평가와, "모델 성능 기여"는 팀 성과와 이어질 수 있다 — 모델 성능은 데이터 말고도 여러 요인이 섞이는데 신입의 몫을 어떻게 나눌까?' },
+    lognet: { name: '물류 네트워크 기획·최적화 (신입)',
+      task: '물동량·비용 데이터를 정리해 거점·노선 운영 대안을 비교 분석한다', out: '월간 물동량 분석표 · 노선/거점 대안 비교표',
+      std: '매월 첫 주 안에 전월 물동량·비용 데이터를 정리하고, 선임이 정한 질문(예: 노선을 합치면 비용이 어떻게 변하나)에 대안 2개 이상과 가정·한계를 적은 비교표를 낸다',
+      kpi: { R: ['대안이 실제 운영안 논의에 채택된 건수', '기획팀 회의록 · 분기', '분기 1건 이상 (선임과 공동)'], O: ['기한 안에 낸 월간 분석표 비율', '보고 기록 · 월', '100%'], B: ['분석 전에 데이터 출처·기간·제외 기준을 선임과 확인', '확인 메모 · 분석마다', '100%'], Q: ['데이터 오류로 다시 계산한 건수', '선임 검토 기록 · 월', '월 1건 이하'] },
+      qual: ['"분석력이 있다"', '"대안마다 비용·배송 시간 차이를 같은 기준으로 계산하고, 가정(물동량 증가율 등)을 바꾸면 결과가 어떻게 달라지는지 한 줄로 적는다"'],
+      bars: ['가정이 바뀌면 결과가 어떻게 달라지는지까지 보여 주고, 현장 운영팀 의견을 받아 대안을 고친다', '기한 안에 비교표를 내지만 가정과 한계 설명이 빠진다', '데이터 기간·기준이 틀려 다시 계산하거나, 대안이 하나뿐이다'],
+      ai: '최적화 도구·AI가 노선안을 냈다면 "도구 결과를 그대로 냈는가"가 아니라 "현장 제약(차량·인력·계약)을 넣어 결과를 검증했는가"를 평가한다',
+      hand: '"분석표 기한 · 정확성"은 역량 평가와, "대안 채택"은 팀 성과와 이어질 수 있다 — 채택은 윗선이 결정하는데 신입의 성과로 볼 수 있을까?' },
+  };
+  JOBS.analyst = Object.assign({}, JOBS.data, { name: '데이터 분석가 (신입)', task: '요청받은 지표를 회사 정의대로 뽑아 분석 리포트를 낸다', out: '분석 리포트 · 대시보드' });
+  const KT = [['R', '결과', '조직·고객에 남은 결과'], ['O', '산출물', '만든 것의 양·기한'], ['B', '행동·과정', '일하는 방식·절차'], ['Q', '질·정확성', '오류·완성도']];
+  const ERRORS = [['halo', '현혹효과', '한 가지 인상이 다른 항목까지 번짐'], ['lenient', '관대화·엄격화', '모두 후하게(박하게)'], ['center', '중심화', '대부분 "보통"'], ['logic', '논리적 오류', '항목끼리 관련 있다고 믿음'], ['recent', '최근효과', '평가 직전 일만 크게 봄'], ['stereo', '상동적 태도', '학교·성별 등 고정관념']];
+  const METHODS = [['BARS', 'BARS (행동 앵커)', '단계마다 구체적 행동을 적어 둠'], ['MBO', 'MBO (목표관리)', '목표를 함께 정하고 결과로 평가'], ['SCALE', '평정척도', '항목별 1~5점'], ['360', '다면평가', '상사·동료·고객 등 여럿이'], ['FORCED', '강제할당', '등급 비율을 미리 정함']];
+  const RATERS = ['직속 상사', '동료', '본인(자기평가)', '고객·요청자'];
+
+  const $ = (id) => document.getElementById(id);
+  // ---------------- 팀 공유: claude.ai 밖(GitHub 등)에서는 구글 시트 서버로 ----------------
+  function sheetDB(PFX) {
+    const URL_ = 'https://script.google.com/macros/s/AKfycbxtSZUz1V81-N0-DUjKk-FQL-R1aNBBAmVTucZLfWcVSUcVA4nfDKG91nat5GczAZki/exec', KEY_ = 'capec-2026-2';
+    const T = {};
+    const parse = (v) => { if (v && typeof v === 'object') return v; if (typeof v === 'string') { try { const o = JSON.parse(v); if (o && typeof o === 'object' && 'v' in o) return o; } catch (e) {} return { v, by: '', at: 0 }; } return { v: '', by: '', at: 0 }; };
+    const st = (team) => T[team] || (T[team] = { data: {}, seq: 0, cbs: new Set(), timer: null, busy: false, ms: 0 });
+    function emit(s) { const docs = Object.keys(s.data).map((id) => ({ id, data: () => s.data[id] })); s.cbs.forEach((o) => { try { o.cb({ docs }); } catch (e) {} }); }
+    function pull(team) {
+      const s = st(team); if (s.busy) return; s.busy = true;
+      fetch(`${URL_}?key=${encodeURIComponent(KEY_)}&op=pull&team=${encodeURIComponent(PFX + team)}&since=${s.seq}&t=${Date.now()}`)
+        .then((r) => r.json()).then((j) => {
+          s.busy = false; if (!j || !j.ok) throw new Error('pull');
+          const f = j.f || {}; let ch = s.seq === 0; Object.keys(f).forEach((k) => { if (k.charAt(0) === '_') return; s.data[k] = parse(f[k]); ch = true; });
+          s.seq = Math.max(s.seq, +j.seq || 0); if (ch) emit(s);
+        }).catch(() => { s.busy = false; s.cbs.forEach((o) => { if (o.err) try { o.err(); } catch (e) {} }); });
+    }
+    function loop(team) { const s = st(team); clearTimeout(s.timer); if (!s.cbs.size) return; pull(team); s.timer = setTimeout(() => loop(team), document.hidden ? 15000 : s.ms); }
+    return {
+      sheet: true,
+      doc(path) {
+        const p = path.split('/'); const team = p[1], k = p.slice(3).join('/');
+        return { set(obj) {
+          const s = st(team); s.data[k] = obj;
+          return fetch(URL_, { method: 'POST', body: JSON.stringify({ key: KEY_, team: PFX + team, items: [{ k, v: obj }] }) })
+            .then((r) => r.json()).then((j) => { if (!j || !j.ok) throw new Error('save'); setTimeout(() => pull(team), 400); });
+        } };
+      },
+      collection(path) {
+        const team = path.split('/')[1];
+        return { onSnapshot(cb, err, ms) {
+          const s = st(team); const o = { cb, err }; s.cbs.add(o); const want = ms || 4000; s.ms = s.ms ? Math.min(s.ms, want) : want;
+          if (s.seq > 0) setTimeout(() => cb({ docs: Object.keys(s.data).map((id) => ({ id, data: () => s.data[id] })) }), 0);
+          loop(team); return () => { s.cbs.delete(o); if (!s.cbs.size) clearTimeout(s.timer); };
+        } };
+      },
+    };
+  }
+  function localId() { try { let v = localStorage.getItem('ws-uid'); if (!v) { v = 'u' + Math.random().toString(36).slice(2, 10); localStorage.setItem('ws-uid', v); } return v; } catch (e) { return 'u' + Math.random().toString(36).slice(2, 10); } }
+  function pdfOut(pdf, fname, msg, doneText) {
+    const blob = pdf.output('blob'); const url = URL.createObjectURL(blob);
+    try { const a = document.createElement('a'); a.href = url; a.download = fname; document.body.append(a); a.click(); a.remove(); } catch (e) {}
+    msg.textContent = doneText + ' 태블릿에서 내려받기가 안 되면 → ';
+    const ob = document.createElement('button'); ob.type = 'button'; ob.className = 'btn'; ob.textContent = 'PDF 새 창에서 열기 (공유 → 파일에 저장)'; ob.onclick = () => { const w = window.open(url, '_blank'); if (!w) location.href = url; }; msg.append(ob);
+    setTimeout(() => URL.revokeObjectURL(url), 10 * 60 * 1000);
+  }
+  const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+  const patNodes = (s) => String(s || '').split(/(\[[^\]]+\])/).map((p) => /^\[[^\]]+\]$/.test(p) ? el('mark', null, p.slice(1, -1)) : document.createTextNode(p));
+
+  // ---------------- 저장 (팀 공유 db · 없으면 이 브라우저) ----------------
+  let team = null, db = null, user = null, me = null, unsub = null, local = false, step = 0, meName = '';
+  const vals = {}, names = {}, pending = {}, unsent = new Set();
+  let cur = vals;
+  const get = (k) => (cur[k] && cur[k].v) || '';
+  const jobKey = () => (team.alts && get('s1-alt')) || team.job;
+  const J = () => JOBS[jobKey()];
+  function syncJob() { if (!team) return; const t = $('tjobtag'); if (t) t.textContent = '우리 직무 예시 · ' + J().name + (team.alts && !get('s1-alt') ? ' — ①에서 기준 직무를 먼저 고르세요' : ''); }
+  const lsKey = (k) => `hrmpm-${team.key}-${k}`;
+  const setSync = (t) => { $('sync').textContent = t; };
+  const OBK = 'hrmpm-outbox';
+  const WRITE = (tk, k, v) => db.doc(`pm/${tk}/f/${k}`).set({ v, by: me || '', at: Date.now() });
+  // 저장 대기열: 입력 순간의 팀·값을 붙잡아 두고, 서버가 받을 때까지 이 기기에 보관
+  let retryT = null;
+  function obRead() { try { return JSON.parse(localStorage.getItem(OBK) || '{}'); } catch (e) { return {}; } }
+  function obWrite(o) { try { localStorage.setItem(OBK, JSON.stringify(o)); } catch (e) {} }
+  const obCount = () => Object.keys(obRead()).length;
+  async function sendOne(tk, k, v, rev) {
+    const id = tk + '/' + k;
+    try {
+      await WRITE(tk, k, v);
+      const o = obRead(); if (o[id] && o[id].rev === rev) { delete o[id]; obWrite(o); }
+      const n = obCount(); setSync(n ? `저장됨 · 전송 대기 ${n}건` : '저장됨'); return true;
+    } catch (e) {
+      setSync(`저장 실패 — 이 기기에 보관 중 (전송 대기 ${obCount()}건) · 자동으로 다시 보냅니다`);
+      clearTimeout(retryT); retryT = setTimeout(flushOutbox, 15000); return false;
+    }
+  }
+  async function flushOutbox() {
+    if (local || !db) return; const o = obRead();
+    for (const id of Object.keys(o)) { const x = o[id]; if (pending[id]) continue; if (await sendOne(x.tk, x.k, x.v, x.rev)) unsent.delete(id); else break; }
+  }
+  function put(k, v) {
+    const tk = team.key, id = tk + '/' + k, rev = Date.now() + '-' + Math.random().toString(36).slice(2, 7);
+    vals[k] = { v, by: me, at: Date.now() }; unsent.add(id); progress();
+    if (!local && db) { const o = obRead(); o[id] = { tk, k, v, rev }; obWrite(o); }
+    clearTimeout(pending[id]);
+    const myT = pending[id] = setTimeout(async () => {
+      if (local || !db) { try { localStorage.setItem(`hrmpm-${tk}-${k}`, v); } catch (e) {}; unsent.delete(id); delete pending[id]; return; }
+      const ok = await sendOne(tk, k, v, rev);
+      if (pending[id] === myT) { delete pending[id]; if (ok && !(obRead()[id])) unsent.delete(id); }
+    }, 700);
+  }
+  function applyOutbox(tk) { const o = obRead(); Object.values(o).forEach((x) => { if (x.tk === tk) { vals[x.k] = { v: x.v, by: me, at: Date.now() }; unsent.add(tk + '/' + x.k); } }); }
+
+  const whoText = (k) => { const r = vals[k]; if (!r || !r.v) return ''; if (r.by && r.by === me) return '내가 씀'; return (names[r.by] || '팀원') + ' 씀'; };
+  async function resolveNames(ids) { if (!user || !user.profiles) return; const need = ids.filter((i) => i && !(i in names)); if (!need.length) return; try { const ps = await user.profiles(need); need.forEach((i) => { names[i] = (ps[i] && ps[i].name) || '팀원'; }); } catch (e) {} }
+
+  let bound = [], derived = [];
+  function bindText(node, k, whoNode) {
+    node.id = 'f-' + k; node.value = get(k);
+    node.addEventListener('input', () => { put(k, node.value); if (whoNode) whoNode.textContent = '내가 쓰는 중'; refresh(); });
+    bound.push({ type: 'text', node, k, whoNode }); if (whoNode) whoNode.textContent = whoText(k);
+  }
+  function bindCheck(node, k) { node.id = 'f-' + k; node.checked = get(k) === '1'; node.addEventListener('change', () => { put(k, node.checked ? '1' : ''); refresh(); }); bound.push({ type: 'check', node, k }); }
+  function applyRemote() { bound.forEach((b) => { if (b.type === 'text') { if (document.activeElement !== b.node && b.node.value !== get(b.k)) b.node.value = get(b.k); if (b.whoNode && document.activeElement !== b.node) b.whoNode.textContent = whoText(b.k); } else if (b.type === 'check') b.node.checked = get(b.k) === '1'; else b.apply(); }); refresh(); }
+  function refresh() { derived.forEach((f) => f()); syncJob(); renderBoard(); renderChain(); syncName(); progress(); }
+
+  // ---------------- 공통 블록 ----------------
+  const concept = (pairs) => { const c = el('div', 'concept'); pairs.forEach(([a, b]) => c.append(el('b', null, a), el('span', null, b))); return c; };
+  function marks(key, opts) { const box = el('div', 'marks'); const bs = opts.map(([lab, cls]) => { const b = el('button', 'mk ' + cls, lab); b.type = 'button'; b.onclick = () => { put(key, get(key) === lab ? '' : lab); ap(); refresh(); }; box.append(b); return [lab, b]; }); const ap = () => bs.forEach(([l, b]) => b.setAttribute('aria-pressed', String(get(key) === l))); bound.push({ type: 'set', apply: ap }); ap(); return box; }
+  function startBtn(ta, k, text) {
+    const b = el('button', 'btn', '예시 넣고 고치기'); b.type = 'button'; let arm = 0;
+    b.onclick = () => {
+      if (ta.value.trim() && ta.value.trim() !== text.trim() && Date.now() - arm > 4000) { arm = Date.now(); b.textContent = '이미 쓴 내용이 있습니다 — 한 번 더 누르면 바꿉니다'; setTimeout(() => { b.textContent = '예시 넣고 고치기'; }, 4000); return; }
+      ta.value = text; put(k, text); refresh(); b.textContent = '예시를 넣었습니다 — 우리 팀 내용으로 고치세요'; setTimeout(() => { b.textContent = '예시 넣고 고치기'; }, 3000); ta.focus();
+    }; return b;
+  }
+  function checkLabel(k, text) { const lb = el('label', 'chk'); const cb = el('input'); cb.type = 'checkbox'; bindCheck(cb, k); const st = el('b', 'okmark'); const s = () => { st.textContent = cb.checked ? ' ✓' : ''; }; cb.addEventListener('change', s); bound.push({ type: 'set', apply: s }); s(); lb.append(cb, document.createTextNode(text), st); return lb; }
+  function writeBlock(k, o) {
+    const box = el('div', 'item'); if (o.title) box.append(el('div', 'where', o.title)); if (o.lead) box.append(el('p', 'lead', o.lead));
+    if (o.pat) { const r = el('div', 'row'); r.append(el('span', 'tagc', '① 틀')); const p = el('p', 'pat'); p.append(...patNodes(o.pat)); r.append(p); box.append(r); }
+    if (o.ex) { const r = el('div', 'row'); r.append(el('span', 'tagc', '② 예시'), el('p', 'ex', o.ex)); box.append(r); }
+    const r = el('div', 'row'); r.append(el('span', 'tagc', '③ 우리 팀')); const w = el('div'); const ta = el('textarea'); ta.rows = o.rows || 3; ta.placeholder = o.ph || (o.pat ? o.pat.replace(/\[|\]/g, '') : '여기에 씁니다');
+    const tools = el('div', 'tools'); const who = el('span', 'who'); if (o.ex && o.seed !== false) tools.append(startBtn(ta, k, o.seedText || o.ex)); if (o.okKey) tools.append(checkLabel(o.okKey, '확인 담당이 읽고 확인함')); tools.append(who); bindText(ta, k, who); w.append(ta, tools); r.append(w); box.append(r);
+    return box;
+  }
+  function stuck(items) { const d = el('details', 'stuck'); d.append(el('summary', null, '막히면 확인')); const ul = el('ul'); items.forEach((x) => ul.append(el('li', null, x))); d.append(ul); return d; }
+
+  // ---------------- 담당 · 확인 ----------------
+  const nSlots = () => { const n = parseInt(get('nslots'), 10); return n >= 1 && n <= 8 ? n : (team.members || []).length; };
+  const slotList = () => Array.from({ length: nSlots() }, (_, i) => (team.members || [])[i] || ['m' + (i + 1), '팀원']);
+  const members = () => slotList().map((m) => m[0]);
+  const dn = (m) => ((get('nm-' + m) || '').trim() || ('팀원 ' + String(m).replace(/^m/, '')));
+  const TASKS = () => [
+    { id: 'a1', st: 0, label: '① 핵심 업무·산출물', done: () => (!team.alts || !!get('s1-alt')) && ['s1-job', 's1-task', 's1-out'].every((k) => get(k).trim()) },
+    { id: 'a2', st: 1, label: '② 성과기준', done: () => !!get('s2-std').trim() },
+    { id: 'a3R', st: 2, label: '③ 지표 · 결과', done: () => !!(get('s3-R-n').trim() && get('s3-R-h').trim()) },
+    { id: 'a3O', st: 2, label: '③ 지표 · 산출물', done: () => !!(get('s3-O-n').trim() && get('s3-O-h').trim()) },
+    { id: 'a3B', st: 2, label: '③ 지표 · 행동·과정', done: () => !!(get('s3-B-n').trim() && get('s3-B-h').trim()) },
+    { id: 'a3Q', st: 2, label: '③ 지표 · 질·정확성', done: () => !!(get('s3-Q-n').trim() && get('s3-Q-h').trim()) },
+    { id: 'a3qa', st: 2, label: '③ 정성 표현 바꿔쓰기', done: () => !!get('s3-qa').trim() },
+    { id: 'a4', st: 3, label: '④ 평가자·방법·앵커', done: () => get('s4-method') && get('s4-b5').trim() && get('s4-b1').trim() },
+    { id: 'a4e', st: 3, label: '④ 막을 오류 · AI 몫', done: () => get('s4-err').split(',').filter(Boolean).length >= 1 && get('s4-errfix').trim() && get('s4-ai').trim() },
+    { id: 'a5', st: 4, label: '⑤ AI 제안 검증', done: () => s5done() },
+    { id: 'a6', st: 5, label: '⑥ 활용·보상으로 넘길 것', done: () => get('s6-use').trim() && get('s6-hand').trim() },
+  ];
+  const defOwner = (id) => { const ms = members(); const ix = TASKS().findIndex((x) => x.id === id); return ms.length ? ms[ix % ms.length] : ''; };
+  const defChk = (id) => { const ms = members(); const ix = TASKS().findIndex((x) => x.id === id); return ms.length > 1 ? ms[(ix + 1) % ms.length] : ''; };
+  const owner = (id) => get('own-' + id) || defOwner(id);
+  const checker = (id) => get('chk-' + id) || defChk(id);
+  function chipRow(id, kind) { const row = el('div', 'chips'); row.append(el('span', 'clab', kind === 'chk' ? '확인' : '담당')); const bs = members().map((m) => { const b = el('button', 'chip' + (kind === 'chk' ? ' chk' : ''), '#' + dn(m)); b.type = 'button'; b.onclick = () => { put((kind === 'chk' ? 'chk-' : 'own-') + id, m); ap(); refresh(); renderMe(); }; row.append(b); return [m, b]; }); const ap = () => { const c = kind === 'chk' ? checker(id) : owner(id); bs.forEach(([m, b]) => b.setAttribute('aria-pressed', String(m === c))); }; bound.push({ type: 'set', apply: ap }); ap(); return row; }
+  const CHECKQ = {
+    a3: ['신입이 스스로 바꿀 수 있는 숫자인가? (경기·날씨·회사 전체 매출이면 ✗)', '데이터를 실제로 구할 수 있나? 누가 · 언제 · 어디서 재나', '②단계 성과기준 문장과 이어지나? 이 지표만 올리려다 생길 부작용은?'],
+    a3qa: ['고친 문장을 다른 사람이 읽어도 같은 행동이 떠오르나?', '"언제 · 무엇을 · 어떤 기준으로"가 다 들어 있나?'],
+    def: ['빈칸이나 "(예)"를 그대로 둔 곳이 없나?', '앞 단계에서 쓴 업무 · 기준과 같은 말을 쓰나?', '다른 팀이 읽어도 무슨 뜻인지 아나?'],
+  };
+  function ckBox(id) {
+    const box = el('div', 'ckbox'); const qs = CHECKQ[id] || CHECKQ[id.slice(0, 2) + id[2]] || (id.startsWith('a3') && id !== 'a3qa' ? CHECKQ.a3 : CHECKQ.def);
+    const guide = el('details', 'ckg'); guide.append(el('summary', null, '확인 담당이 볼 것')); const ol = el('ol'); qs.forEach((q) => ol.append(el('li', null, q))); guide.append(ol);
+    const note = el('input'); note.type = 'text'; note.placeholder = '담당에게 남길 한 줄 (고칠 점 · 좋은 점)'; bindText(note, 'ckn-' + id, null);
+    const shown = el('p', 'cknote');
+    derived.push(() => { const mine = meName && checker(id) === meName; guide.hidden = !mine; note.hidden = !mine; if (mine && !guide.dataset.o) { guide.open = true; guide.dataset.o = '1'; } const n = get('ckn-' + id).trim(); shown.hidden = mine || !n; shown.textContent = n ? `확인 의견(${dn(checker(id))}): ${n}` : ''; });
+    box.append(ckBtn(id), guide, note, shown); return box;
+  }
+  function ckBtn(id) {
+    const b = el('button', 'btn ckb', ''); b.type = 'button'; b.onclick = () => { put('ck-' + id, get('ck-' + id) === '1' ? '' : '1'); refresh(); };
+    derived.push(() => { const t = TK(id); const mine = meName && checker(id) === meName; const ok = get('ck-' + id) === '1'; b.hidden = !(mine || ok); b.disabled = !mine; b.textContent = ok ? (mine ? '확인함 ✓ (취소)' : `${dn(checker(id))} 확인함 ✓`) : (t && t.done() ? '확인했음 누르기' : '담당이 채우면 확인'); if (mine && !ok && !(t && t.done())) b.disabled = true; });
+    return b;
+  }
+  function ownerLine(id) {
+    const box = el('div'); const line = el('p', 'lead'); derived.push(() => { const mine = meName && owner(id) === meName; const tk = TASKS().find((x) => x.id === id); const split = tk && TASKS().filter((x) => x.st === tk.st).length > 1; line.textContent = (split ? `[${tk.label.replace(/^[①-⑥]\s*/, '')}] ` : '') + `담당 #${dn(owner(id))} · 확인 #${dn(checker(id))}` + (mine ? '  ← 내 칸' : ''); line.style.color = mine ? 'var(--gold)' : ''; line.style.fontWeight = mine ? '700' : ''; });
+    const d = el('details', 'owners'); const tk0 = TASKS().find((x) => x.id === id); const sp0 = tk0 && TASKS().filter((x) => x.st === tk0.st).length > 1; d.append(el('summary', null, sp0 ? `「${tk0.label.replace(/^[①-⑥]\s*/, '')}」 담당·확인 바꾸기` : '담당·확인 바꾸기'), chipRow(id, 'own'), chipRow(id, 'chk')); const warn = el('span', 'warnline'); derived.push(() => { warn.textContent = owner(id) === checker(id) ? '담당과 확인은 다른 사람이 맡습니다' : ''; }); d.append(warn);
+    const ckb = ckBox(id);
+    box.append(line, ckb, d); return box;
+  }
+
+  // ---------------- 단계 ----------------
+  const s5done = () => { const rows = [0, 1, 2].filter((i) => get(`s5-${i}-ai`).trim() && get(`s5-${i}-v`) && get(`s5-${i}-why`).trim()); return rows.length >= 2; };
+  const TK = (id) => TASKS().find((x) => x.id === id);
+  const STEPS = [
+    { name: '① 핵심 업무 고르기', day: 'mon', done: () => TK('a1').done() },
+    { name: '② 성과기준', day: 'mon', done: () => TK('a2').done() },
+    { name: '③ 성과지표 4종', day: 'mon', done: () => ['a3R', 'a3O', 'a3B', 'a3Q', 'a3qa'].every((id) => TK(id).done()) },
+    { name: '④ 평가 방법과 오류', day: 'tue', done: () => TK('a4').done() && TK('a4e').done() },
+    { name: '⑤ AI 제안 검증', day: 'tue', done: () => s5done() },
+    { name: '⑥ 보상으로 넘기기 · 저장', day: 'tue', done: () => TK('a6').done() },
+  ];
+  function head(c, i, title) { const h = el('div', 'stagehead'); h.append(el('span', 'eyebrow', `단계 ${'①②③④⑤⑥'[i]}`), el('span', 'daytag ' + STEPS[i].day, STEPS[i].day === 'mon' ? '11/9(월)' : '11/10(화)')); c.append(h, el('h2', null, title)); }
+
+
+  // ================= 참여 장치: 워밍업 실험 · 평가오류 퀴즈 · 짝 팀 교차 점검 =================
+  const HG = [['매주 발주안 (마감 월 10시)', '4주 중 3주는 10시 전에 냈고, 1주는 11시에 냈다'], ['2주 차 · 행사 주간', '시스템 추천 수량을 행사에 맞춰 늘려 품절(결품) 0개'], ['3주 차', '추천 수량을 그대로 써서 4개 품목이 품절'], ['공급사 협상', '주력 상품 매입 단가를 3% 낮췄다'], ['팀 회의', '분기 계획 발표를 잘해 팀장이 칭찬했다'], ['마지막 주', '재고 폐기 금액이 전월보다 20% 늘었다']];
+  const HGB = [['5점', '추천 수량을 근거 있게 보정하고, 보정 이유와 결과를 매주 기록해 다음 발주에 반영한다'], ['3점', '기한 안에 내지만 추천 수량을 거의 그대로 쓴다 (보정 근거 기록 없음)'], ['1점', '마감을 놓치거나 근거 없이 수량을 바꿔 결품 · 과재고를 낸다']];
+  const SC5 = ['1 매우 미흡', '2 미흡', '3 보통', '4 우수', '5 매우 우수'].map((x) => [x, 'ok']);
+  const ovMaps = () => TEAMS.map((t) => [t, t.key === (team && team.key) ? Object.assign({}, OV[t.key] || {}, vals) : (OV[t.key] || {})]);
+  const gv = (m, k) => (m[k] && m[k].v) || '';
+  function distBlock(prefix) {
+    const box = el('div');
+    derived.push(() => {
+      box.replaceChildren();
+      const cnt = [0, 0, 0, 0, 0]; let n = 0;
+      ovMaps().forEach(([t, m]) => Object.keys(m).forEach((k) => { if (k.startsWith(prefix)) { const v = parseInt(gv(m, k), 10); if (v >= 1 && v <= 5) { cnt[v - 1]++; n++; } } }));
+      if (!ovOn && db) { const b = el('button', 'btn', prefix === 'wu2-' ? '반 전체 점수 보기 (BARS로 다시)' : '반 전체 점수 보기'); b.type = 'button'; b.onclick = () => { startOV(); b.disabled = true; b.textContent = '불러오는 중…'; }; box.append(b); return; }
+      if (!n) { box.append(el('p', 'clab', '아직 모인 점수가 없습니다. 팀 공유 중이면 다른 팀 점수도 여기에 모입니다.')); return; }
+      const mx = Math.max(...cnt); const d = el('div', 'dist');
+      cnt.forEach((c, i) => { const bar = el('div', 'bar' + (prefix === 'wu2-' ? ' b2' : '')); bar.style.width = (mx ? Math.round(c / mx * 100) : 0) + '%'; d.append(el('span', null, (i + 1) + '점'), bar, el('span', 'clab', c + '명')); });
+      box.append(el('p', 'clab', `우리 반 전체 ${n}명의 점수`), d);
+    });
+    return box;
+  }
+  function teamRange(prefix) { const xs = members().map((m) => parseInt(get(prefix + m), 10)).filter((v) => v >= 1); return xs.length ? `${Math.min(...xs)} ~ ${Math.max(...xs)}점 (${xs.length}명)` : '아직 없음'; }
+  function factTable5(hd, rows) {
+    const tw = el('div', 'tw'); const tb = el('table', 'g ft mt'); const th = el('thead'); const hr = el('tr'); hd.forEach((h) => hr.append(el('th', null, h))); th.append(hr); tb.append(th);
+    const bd = el('tbody'); rows.forEach((r) => { const tr = el('tr'); r.forEach((x, i) => tr.append(el(i ? 'td' : 'th', null, x))); bd.append(tr); }); tb.append(bd); tw.append(tb); return tw;
+  }
+  function factTable(hd, rows) {
+    const tw = el('div', 'tw'); const tb = el('table', 'g ft'); const th = el('thead'); const hr = el('tr'); hd.forEach((h, i) => { const x = el('th', null, h); if (!i) x.style.width = '22%'; hr.append(x); }); th.append(hr); tb.append(th);
+    const bd = el('tbody'); rows.forEach(([a, b]) => { const tr = el('tr'); tr.append(el('th', null, a), el('td', null, b)); bd.append(tr); }); tb.append(bd); tw.append(tb); return tw;
+  }
+  function warmup(c, phase) {
+    const it = el('div', 'item');
+    if (phase === 1) {
+      it.append(el('div', 'where', '워밍업 · 점수부터 매겨 봅시다 — 신입 MD 한결(가상)의 첫 달'));
+      it.append(el('p', 'lead', '반 전체 공통 사례입니다. 우리 팀 직무가 아니어도 됩니다 — 모두가 같은 사람을 매겨야 "사람마다 점수가 얼마나 다른지"를 비교할 수 있습니다. 기준 없이 각자 1~5점을 누르고, 가장 크게 본 사실 하나를 고릅니다. 옆 사람과 맞추지 않습니다.'));
+      it.append(factTable(['구분', '한 일 · 결과'], HG));
+    } else {
+      it.append(el('div', 'where', '실험 다시 · 같은 한결의 기록을 이번엔 BARS로'));
+      it.append(el('p', 'lead', '어제(월)와 같은 기록입니다. 아래 앵커로 다시 매기고, 점수가 얼마나 모이는지 비교합니다. 이 앵커는 MD 직무용 예시입니다 — 아래 3번에서 우리 직무 앵커를 이렇게 "점수마다 하는 행동"이 보이게 씁니다.'));
+      it.append(factTable(['점수', '이런 행동을 하는 사람'], HGB));
+    }
+    const pre = phase === 1 ? 'wu1-' : 'wu2-';
+    const lg = el('div', 'wulegend'); lg.append(el('b', null, phase === 1 ? '위 기록 6개를 모두 보고, 한결의 첫 달 전체에 점수 하나만 줍니다 (사실마다 따로 매기지 않습니다)' : 'BARS 표를 보고 한결의 첫 달 전체에 점수 하나만 다시 줍니다')); it.append(lg);
+    const others = el('div', 'wuothers');
+    members().forEach((m) => {
+      if (meName && m !== meName) {
+        const li = el('div', 'wuo'); li.append(el('b', null, dn(m)));
+        const v = el('span'); derived.push(() => { const sc = get(pre + m), f = phase === 1 ? get('wuf-' + m) : ''; v.textContent = sc ? (sc + (f ? ' · ' + f : '')) : '아직 안 누름'; v.className = sc ? '' : 'clab'; }); li.append(v); others.append(li); return;
+      }
+      const r = el('div', 'wurow' + (m === meName ? ' mine' : '')); r.append(el('span', 'nm', dn(m) + (m === meName ? ' (나)' : ''))); const sb0 = el('div', 'sub2'); sb0.append(el('span', 'wlab', '① 전체 점수 1개'), marks(pre + m, SC5)); r.append(sb0);
+      if (phase === 1) { const sb = el('div', 'sub2'); sb.append(el('span', 'wlab', '② 그 점수를 정할 때 가장 크게 본 사실 1개')); sb.append(marks('wuf-' + m, HG.map(([a]) => [a, 'mid']))); r.append(sb); }
+      it.append(r);
+    });
+    if (meName) { it.append(el('p', 'wlab2', '팀원들이 누른 점수 (각자 자기 화면에서 누릅니다)'), others); } else { it.insertBefore(el('p', 'warnline', '맨 위에서 내 자리를 고르면 내 줄만 크게 보입니다.'), it.querySelector('.wurow')); }
+    const rg = el('div', 'rng'); derived.push(() => { rg.replaceChildren(); const a = el('span'); a.append(document.createTextNode('우리 팀 처음: '), el('b', null, teamRange('wu1-'))); rg.append(a); if (phase === 2) { const b = el('span'); b.append(document.createTextNode('BARS로 다시: '), el('b', null, teamRange('wu2-'))); rg.append(b); } }); it.append(rg);
+    it.append(distBlock('wu1-')); if (phase === 2) it.append(distBlock('wu2-'));
+    if (phase === 2) { const w = el('input'); w.type = 'text'; w.placeholder = '무엇이 달라졌나 (예: 발표 인상 대신 3주 차 보정 행동 하나로 모였다 · 처음 점수에 끼어든 오류는 현혹효과)'; bindText(w, 'wu-why', null); it.append(w); }
+    c.append(it);
+  }
+  const QZ = [['신입이 첫 회의에서 자신 있게 말해서, 팀장이 보고서 품질 항목도 높게 줬다.', 'halo'], ['팀장이 신입 다섯 명 모두에게 모든 항목 "3점"을 줬다. "아직 잘 몰라서"라고 했다.', 'center'], ['1년 내내 기한을 지켰는데, 평가 직전 달에 한 번 늦은 것이 등급을 결정했다.', 'recent'], ['"지방대 출신이라 데이터 분석은 약할 것"이라며 분석 항목을 낮게 줬다.', 'stereo'], ['팀 분위기가 나빠질까 봐 팀장이 전원에게 "우수"를 줬다.', 'lenient'], ['"엑셀을 잘하니 데이터 해석도 잘하겠지"라며 분석 항목을 높게 줬다.', 'logic']];
+  const ERRL = (v) => (ERRORS.find((e) => e[0] === v) || [])[1];
+  function qzScore(m) { let s = 0; QZ.forEach(([, a], i) => { if (gv(m, 'qz-' + i) === ERRL(a)) { s++; if (gv(m, 'qzf-' + i).trim()) s++; } }); return s; }
+  function quiz(c) {
+    const it = el('div', 'item'); it.append(el('div', 'where', '팀 대항 퀴즈 · 이 평가, 무엇이 문제인가'), el('p', 'lead', '사례마다 오류 이름을 고르고, 막는 장치를 한 줄 씁니다. 오류 이름 1점 + 장치 1점 · 최고 12점. 다 쓰면 「답 확인」을 누릅니다 — 누른 뒤에는 점수판에 올라갑니다.'));
+    QZ.forEach(([q, a], i) => {
+      const b = el('div', 'qz'); const p = el('p', 'pat'); p.append(el('span', 'qn', String(i + 1)), document.createTextNode(q)); b.append(p);
+      b.append(marks('qz-' + i, ERRORS.map(([, l]) => [l, 'mid'])));
+      const f = el('input'); f.type = 'text'; f.placeholder = '막는 장치 (예: 항목별로 따로 평가 · 주간 기록 · 다면평가)'; bindText(f, 'qzf-' + i, null); b.append(f);
+      const res = el('span', 'res'); derived.push(() => { if (get('qz-done') !== '1') { res.textContent = ''; return; } const ok = get('qz-' + i) === ERRL(a); res.className = 'res ' + (ok ? 'ok' : 'no'); res.textContent = ok ? '✓ 맞음' : `✗ 정답: ${ERRL(a)}`; }); b.append(res);
+      it.append(b);
+    });
+    if (get('qz-done') === '1') startOV(); const tl = el('div', 'tools'); const bt = el('button', 'btn primary', '답 확인'); bt.type = 'button'; bt.onclick = () => { put('qz-done', '1'); startOV(); refresh(); }; const sc = el('span', 'clab'); derived.push(() => { sc.textContent = get('qz-done') === '1' ? `우리 팀 ${qzScore(Object.assign({}, vals))}점 / 12` : ''; bt.hidden = get('qz-done') === '1'; }); tl.append(bt, sc); it.append(tl);
+    const lbw = el('div'); derived.push(() => {
+      lbw.replaceChildren(); const rows = ovMaps().filter(([, m]) => gv(m, 'qz-done') === '1').map(([t, m]) => [t, gv(m, 'teamname').trim() || t.label, qzScore(m)]).sort((x, y) => y[2] - x[2]);
+      if (!rows.length) return; const tb = el('table', 'lb'); tb.innerHTML = '<thead><tr><th>순위</th><th>팀</th><th>점수</th></tr></thead>'; const bd = el('tbody');
+      rows.forEach(([t, nm, sc2], i) => { const tr = el('tr', t.key === team.key ? 'me' : ''); tr.append(el('td', null, String(i + 1)), el('td', null, nm), el('td', null, sc2 + ' / 12')); bd.append(tr); }); tb.append(bd); lbw.append(el('p', 'clab', '점수판 — 답을 확인한 팀만 올라갑니다'), tb);
+    }); it.append(lbw);
+    it.append(el('p', 'notice', '오늘 맞힌 오류 중 우리 직무에서 가장 생기기 쉬운 것 하나 → 바로 아래 「4. 우리 평가에서 가장 걱정되는 오류」 칸에 고르고 막는 방법을 씁니다.'));
+    c.append(it);
+  }
+  // 짝 팀: 비슷한 직무끼리 (교수님이 바꾸려면 이 표만 고치면 됩니다)
+  const PAIR = { t1: 't4', t4: 't1', t6: 't5', t5: 't6', t3: 't7', t7: 't2', t2: 't3' };
+  const pvOf = (m, tk) => (m['pv-to'] ? m['pv-to'].v : (PAIR[tk] || ''));
+  const myPv = () => (vals['pv-to'] ? get('pv-to') : PAIR[team.key] || '');
+  function peer(c) {
+    const it = el('div', 'item'); it.append(el('div', 'where', '교차 점검 · 내가 이 지표로 평가받는 신입이라면?'), el('p', 'lead', '짝 팀은 비슷한 직무끼리 미리 배정돼 있습니다(「배정」 표시). 그 팀의 지표가 아래에 나타납니다. 그 회사 신입이 되었다고 생각하고, 가장 걸리는 지표 하나를 골라 공정 · 애매 · 불공정과 이유 한 줄을 씁니다. 나머지 지표와 「이렇게 바꾸면?」은 시간이 남으면 씁니다. 우리 의견은 1분 안에 짝 팀 화면에 나타나고, 짝 팀은 내일(화) 시작할 때 보고 지표를 고칩니다.'));
+    if (myPv()) startOV();
+    const pk = el('div', 'chips'); pk.append(el('span', 'clab', '짝 팀'));
+    const pbs = TEAMS.filter((t) => t.key !== team.key).map((t) => { const b = el('button', 'chip', t.label + (PAIR[team.key] === t.key ? ' (배정)' : '')); b.type = 'button'; b.onclick = () => { put('pv-to', myPv() === t.key ? '' : t.key); startOV(); ap(); refresh(); }; pk.append(b); return [t.key, b]; });
+    const ap = () => pbs.forEach(([k, b]) => b.setAttribute('aria-pressed', String(myPv() === k))); bound.push({ type: 'set', apply: ap }); ap(); it.append(pk);
+    const tw = el('div', 'tw'); const tb = el('table', 'g'); tb.innerHTML = '<thead><tr><th style="width:16%">짝 팀 지표</th><th>내용</th><th style="width:20%">평가받는다면</th><th>이유 (신입 입장)</th><th>이렇게 바꾸면? (선택)</th></tr></thead>'; const bd = el('tbody');
+    KT.forEach(([t, nm]) => {
+      const tr = el('tr'); const th = el('th'); th.append(el('span', 'kt', t), document.createTextNode(' ' + nm)); const cont = el('td');
+      derived.push(() => { const pkey = myPv(); const m = OV[pkey] || {}; cont.textContent = pkey ? ([gv(m, `s3-${t}-n`), gv(m, `s3-${t}-g`) && '목표 ' + gv(m, `s3-${t}-g`)].filter(Boolean).join(' · ') || '(짝 팀이 아직 안 씀)') : '짝 팀을 먼저 고르세요'; });
+      const v = el('td'); v.append(marks('pvo-' + t, [['공정', 'ok'], ['애매', 'mid'], ['불공정', 'no']]));
+      const r1 = el('td'); const i1 = el('textarea'); i1.rows = 2; bindText(i1, 'pvr-' + t, null); r1.append(i1);
+      const r2 = el('td'); const i2 = el('textarea'); i2.rows = 2; bindText(i2, 'pvx-' + t, null); r2.append(i2);
+      tr.append(th, cont, v, r1, r2); bd.append(tr);
+    });
+    tb.append(bd); tw.append(tb); it.append(tw);
+    c.append(it);
+  }
+  function peerIn(c) {
+    const it = el('div', 'item'); it.append(el('div', 'where', '시작 · 어제 짝 팀이 준 의견으로 ③ 지표 고치기'), el('p', 'lead', '④는 ③의 지표 위에서 평가 방법을 정합니다. 그래서 먼저 지표를 고칩니다. 의견마다 반영 · 보류를 고르고, 반영했다면 ③단계 표에서 무엇을 바꿨는지 씁니다.'));
+    const rcv = el('div'); rcv.style.display = 'flex'; rcv.style.flexDirection = 'column'; rcv.style.gap = '8px';
+    const drawR = () => {
+      const froms = TEAMS.filter((t) => t.key !== team.key && pvOf(OV[t.key] || {}, t.key) === team.key);
+      const have = [...rcv.querySelectorAll('.pvbox')].map((n) => n.dataset.k).join(',');
+      if (have === froms.map((t) => t.key).join(',') && froms.length) { rcv.querySelectorAll('.pvbox').forEach((n) => { const m = OV[n.dataset.k] || {}; n.querySelector('.pvt').textContent = KT.map(([t, nm]) => gv(m, 'pvo-' + t) ? `${nm}: ${gv(m, 'pvo-' + t)}${gv(m, 'pvr-' + t) ? ' — ' + gv(m, 'pvr-' + t) : ''}${gv(m, 'pvx-' + t) ? ' → 제안: ' + gv(m, 'pvx-' + t) : ''}` : '').filter(Boolean).join('\n') || '(아직 의견을 쓰는 중)'; }); return; }
+      rcv.replaceChildren(); 
+      if (!ovOn && db) { const b = el('button', 'btn', '받은 의견 불러오기'); b.type = 'button'; b.onclick = () => { startOV(); b.disabled = true; b.textContent = '불러오는 중…'; }; rcv.append(b); return; }
+      if (!froms.length) { rcv.append(el('p', 'clab', '아직 받은 의견이 없습니다. 다른 팀이 우리를 짝 팀으로 고르면 여기 나타납니다.')); return; }
+      froms.forEach((t) => { const b = el('div', 'pvbox'); b.dataset.k = t.key; b.append(el('span', 'from', (gv(OV[t.key] || {}, 'teamname').trim() || t.label) + ' 팀의 의견')); const p = el('p', 'pat pvt'); p.style.whiteSpace = 'pre-wrap'; b.append(p); b.append(marks('pvin-' + t.key, [['반영', 'ok'], ['보류', 'mid']])); const w = el('input'); w.type = 'text'; w.placeholder = '어떻게 고쳤나 (③단계 지표 표 어디를) · 보류라면 이유'; bindText(w, 'pvinw-' + t.key, null); b.append(w); rcv.append(b); });
+      drawR();
+    };
+    derived.push(drawR); it.append(rcv);
+    c.append(it);
+  }
+  // ---------------- 저장 · 불러오기 ----------------
+  const MAT = [];
+  async function saveBlob(blob, fname, msg) {
+    const dl = window.claude && window.claude.use ? await window.claude.use('downloads') : null;
+    if (dl) { const r = await dl.save({ filename: fname, data: blob }); msg.textContent = (r && r.note) || '저장했습니다.'; return; }
+    const url = URL.createObjectURL(blob); try { const a = document.createElement('a'); a.href = url; a.download = fname; document.body.append(a); a.click(); a.remove(); } catch (e) {}
+    msg.textContent = '저장했습니다 (다운로드 폴더). 태블릿에서 안 되면 → '; const o = el('a', null, '새 창에서 열기'); o.href = url; o.target = '_blank'; o.rel = 'noopener'; msg.append(o);
+  }
+  function renderSave() {
+    const c = $('savecard'); if (!c || !team) return; c.replaceChildren();
+    c.append(el('span', 'eyebrow', '저장 · 불러오기 · 제출'), el('h2', null, '오늘 한 것 저장하고, 내일 이어서 하기'));
+    c.append(el('p', 'lead', '팀 공유 화면에서는 입력이 자동으로 서버에 저장됩니다. 그래도 수업이 끝나면 PDF와 입력 파일을 한 번씩 받아 팀 Drive에 올려 둡니다 — 인터넷이 끊기거나 다른 기기에서 열어도 이어서 할 수 있게.'));
+    const g = el('div', 'svgrid');
+    const pdfBox = (mode, title, sub) => { const d = el('div', 'svbox'); d.append(el('b', null, title), el('span', 'clab', sub)); const b = el('button', 'btn primary', 'PDF 저장'); b.type = 'button'; const m = el('span', 'warnline'); b.onclick = () => savePDF(b, m, mode); d.append(b, m); return d; };
+    g.append(pdfBox('mon', '① 오늘(월) 한 것', '①~③ + 워밍업 · 교차 점검'), pdfBox('tue', '② 내일(화) 작업분', '④~⑥ + 퀴즈 · 받은 의견 반영'), pdfBox('toc', '③ 최종 보고서 로드맵(목차)', '⑥의 12개 장 상태 · 담당 · 역할'), pdfBox('all', '④ 전체 — DOOR 제출용', '①~⑥ 전부 + 로드맵'));
+    c.append(g);
+    const io = el('div', 'svbox wide'); io.append(el('b', null, '⑤ 입력 내용 파일로 저장 · 불러오기'), el('span', 'clab', '팀이 쓴 칸 전부를 파일 하나(.json)로 받습니다. 내일 다른 기기에서 열거나 서버가 안 될 때 "불러오기"로 되살립니다.'));
+    const row = el('div', 'tools'); const sb = el('button', 'btn', '입력 내용 저장 (.json)'); sb.type = 'button'; const sm = el('span', 'warnline');
+    sb.onclick = () => { const data = {}; Object.keys(vals).forEach((k) => { if (vals[k] && String(vals[k].v || '') !== '') data[k] = vals[k].v; }); const blob = new Blob([JSON.stringify({ course: 'HRM-성과관리', team: team.key, teamName: dispName(), savedAt: new Date().toISOString(), data }, null, 1)], { type: 'application/json' }); saveBlob(blob, `HRM_성과관리_${dispName().replace(/[\\/:*?"<>|]/g, '')}_입력내용_${new Date().toISOString().slice(5, 10).replace('-', '')}.json`, sm); };
+    const fi = el('input'); fi.type = 'file'; fi.accept = '.json,application/json'; fi.hidden = true; const lb = el('button', 'btn', '불러오기'); lb.type = 'button'; lb.onclick = () => fi.click();
+    const conf = el('div', 'tools'); conf.hidden = true;
+    fi.onchange = async () => {
+      const f = fi.files && fi.files[0]; fi.value = ''; if (!f) return; let j = null; try { j = JSON.parse(await f.text()); } catch (e) { sm.textContent = '파일을 읽지 못했습니다. 이 워크시트에서 저장한 .json 파일인지 확인하세요.'; return; }
+      if (!j || !j.data || j.course !== 'HRM-성과관리') { sm.textContent = '이 워크시트의 입력 파일이 아닙니다.'; return; }
+      const n = Object.keys(j.data).length; const other = j.team !== team.key; conf.replaceChildren(); conf.hidden = false;
+      conf.append(el('span', 'warnline', `${j.teamName || j.team} 팀 파일 · 칸 ${n}개 · ${String(j.savedAt || '').slice(0, 16).replace('T', ' ')} 저장${other ? ' — 지금 고른 팀과 다릅니다!' : ''}. 지금 화면의 같은 칸을 이 내용으로 바꿉니다.`));
+      const ok = el('button', 'btn primary', '바꾸기'); ok.type = 'button'; ok.onclick = () => { Object.entries(j.data).forEach(([k, v]) => put(k, v)); conf.hidden = true; sm.textContent = `칸 ${n}개를 불러왔습니다. 팀 화면에도 곧 반영됩니다.`; renderMe(); renderStage(); refresh(); };
+      const no = el('button', 'btn', '취소'); no.type = 'button'; no.onclick = () => { conf.hidden = true; }; conf.append(ok, no);
+    };
+    row.append(sb, lb, fi); io.append(row, conf, sm); c.append(io);
+    const dv = el('div', 'svbox wide'); dv.append(el('b', null, '⑥ 구글 드라이브 어디에 올리나'));
+    const tbl = factTable5(['파일', '올릴 곳', '파일 이름 예'], [
+      ['오늘 · 내일 PDF', '팀 공유 Drive › 인적자원관리 › 성과관리', `HRM_성과관리_${dispName()}_1109_월.pdf`],
+      ['입력 내용 (.json)', '같은 폴더 (덮어쓰지 말고 날짜별로)', `HRM_성과관리_${dispName()}_입력내용_1109.json`],
+      ['로드맵 PDF', '팀 공유 Drive › 인적자원관리 › 00_최종보고서', `HRM_성과관리_${dispName()}_로드맵.pdf`],
+      ['전체 PDF', 'DOOR 제출 (팀 대표 1명) + 성과관리 폴더에도 보관', `HRM_성과관리_${dispName()}_전체.pdf`],
+    ]); dv.append(tbl, el('p', 'clab', '폴더가 없으면 팀 대표가 만듭니다. 협업템플릿(PPT)으로 작업한 팀은 같은 폴더에서 템플릿 사본을 함께 씁니다.')); c.append(dv);
+    if (MAT.length && !/claudeusercontent|claude\.ai/.test(location.href)) { const mt = el('div', 'svbox wide'); mt.append(el('b', null, '⑦ 수업 자료 내려받기')); const ml = el('div', 'tools'); MAT.forEach(([l, h]) => { const a = el('a', 'btn', l); a.href = h; a.setAttribute('download', ''); ml.append(a); }); mt.append(ml, el('p', 'clab', '태블릿에서 이 화면의 PDF 저장이 안 되면 협업템플릿을 팀 Drive에 올려 함께 쓰고, PDF로 내보내 DOOR에 제출합니다.')); c.append(mt); }
+  }
+  function renderS1(c) {
+    head(c, 0, '성과기준은 "이 직무가 실제로 하는 일" 하나에서 출발합니다');
+    warmup(c, 1);
+    c.append(concept([['핵심 개념', '성과평가 = 한 시점의 판단(얼마나 잘했나). 성과관리 = 목표 정하기 → 중간 피드백 → 평가 → 결과 활용의 전 과정. 오늘은 "목표(기준)"부터 정합니다.'], ['왜 업무 하나?', '직무 전체를 한꺼번에 평가 기준으로 만들면 모든 칸이 흐려집니다. 핵심 업무(Task) 하나와 그 산출물에서 시작해 끝까지 이어 봅니다.'], ['어디서 가져오나', '직무분석의 업무(Task) 목록 · 교육훈련의 "입사 후 개발 KSAO"와 교육목표. 새로 조사하지 않습니다.'], ['직무 vs 업무', '직무(Job) = 한 사람이 맡는 일 전체의 이름 (예: 브랜드 마케터). 업무(Task) = 그 직무 안에서 하는 일 하나하나 (예: 시즌 캠페인 기획·실행, 주간 성과 리포트 작성). 오늘은 직무 하나를 정하고(1번), 그 안의 업무 하나를 골라(2번) 평가 기준을 만듭니다.']]));
+    c.append(ownerLine('a1'));
+    if (team.alts) {
+      const it = el('div', 'item'); it.append(el('div', 'where', '0. 우리 팀 기준 직무 고르기 — 이 선택이 ①~⑥ 예시 전체를 바꿉니다'), el('p', 'lead', '지난 자료에 직무가 두 가지 섞여 있습니다. 신입이 입사 첫 3개월에 실제로 하는 일이 더 분명한 쪽을 고릅니다. 고르면 핵심 업무 · 성과기준 · 지표 · 행동 앵커 · AI · 보상 예시가 그 직무로 바뀝니다. 이미 쓴 칸은 지워지지 않습니다.'));
+      const ch = el('div', 'marks'); const bs = team.alts.map(([k, l, src]) => { const b = el('button', 'mk ok', `${l} (${src})`); b.type = 'button'; b.onclick = () => { const had = get('s1-alt'); put('s1-alt', had === k ? '' : k); renderSteps(); renderStage(); }; ch.append(b); return [k, b]; });
+      const ap = () => bs.forEach(([k, b]) => b.setAttribute('aria-pressed', String(get('s1-alt') === k))); bound.push({ type: 'set', apply: ap }); ap(); it.append(ch);
+      const warn = el('p', 'warnline'); derived.push(() => { warn.textContent = get('s1-alt') && get('s1-task').trim() ? '직무를 바꿨다면, 이미 쓴 핵심 업무 · 기준 · 지표가 고른 직무와 맞는지 확인하세요.' : (get('s1-alt') ? '' : '아직 고르지 않았습니다. 지금 예시는 두 직무가 섞인 임시 예시입니다.'); }); it.append(warn);
+      c.append(it);
+    }
+    const j = J();
+    c.append(writeBlock('s1-job', { title: '1. 우리 기준 직무 — 프로젝트 대표 직무 1개 (한 줄)', lead: '우리 팀 프로젝트 전체(직무분석 → 채용 → 교육훈련 → 오늘 성과관리 → 보상)가 기준으로 삼는 직무 하나입니다. 교육훈련 때 정한 것을 그대로 씁니다. 여러 직무를 조사했다면 오늘은 대표 직무 하나만 고릅니다 — 직무가 둘이면 평가 기준도 둘이 되어 끝까지 이어지지 않습니다.', pat: '[기업] [직무] 신입 (신입이 맡는다고 가정한 경우 [팀 가정] 표시)', ex: team.jobline, rows: 1 }));
+    c.append(writeBlock('s1-task', { title: '2. 오늘 평가 기준을 만들 핵심 업무(Task) 1개', lead: '신입이 입사 첫 3개월 안에 반드시 혼자 해내야 하는 일 중 하나. 교육훈련에서 고른 "부족한 업무 장면"이 있으면 그 업무가 가장 좋습니다.', pat: '[무엇을] [어떻게] 한다', ex: j.task, rows: 2 }));
+    c.append(writeBlock('s1-out', { title: '3. 그 업무가 만들어 내는 것 (산출물)', lead: '눈으로 확인할 수 있는 결과물. 산출물이 있어야 "잘했다"를 볼 수 있습니다.', pat: '[문서·데이터·결과물 이름]', ex: j.out, rows: 1 }));
+    c.append(writeBlock('s1-from', { title: '4. 교육훈련에서 가져올 것 (있으면)', lead: '교육목표(조건+행동+기준)나 효과측정의 L3(현업 적용) 지표가 있으면 옮깁니다. 없으면 [교육훈련 미작성]이라고 쓰고 넘어갑니다.', pat: '교육목표: [조건]으로 [행동]한다 — [기준] / L3: [현업에서 확인할 행동]', ph: '없으면 [교육훈련 미작성]', rows: 2 }));
+    c.append(stuck(['업무 칸에 "마케팅 업무를 한다"처럼 직무 이름이 들어갔다 → 그 직무가 월요일 아침에 실제로 하는 일 하나로 좁힙니다.', '산출물이 떠오르지 않는다 → 그 일이 끝나면 상사에게 무엇을 보여 주나?', '경력직 업무(전략 총괄 등)를 골랐다 → 신입이 첫 3개월에 하는 일로 바꿉니다.']));
+  }
+  function renderS2(c) {
+    head(c, 1, '"잘했다"를 누구나 같은 뜻으로 읽게 씁니다');
+    c.append(concept([['핵심 개념', '성과기준 = 업무를 "얼마나 · 어떤 수준으로" 해냈을 때 잘한 것인지 정한 문장. 기한 · 품질 · 결과 중 2가지 이상이 들어가야 판단할 수 있습니다.'], ['왜 중요하나', '알바는 대개 같은 시급이라 "잘했다"가 돈을 바꾸지 않습니다. 회사에서는 다릅니다. 이 문장이 성과급 · 연봉 인상 · 승진을 가릅니다. 문장이 애매하면 잘하고도 같은 돈을 받거나, 평가자 기분에 따라 돈이 달라집니다.'], ['연결', '여기 쓴 기준이 ③단계 지표(무엇을 셀까)와 ④단계 평가 앵커(5·3·1점)로 그대로 쪼개집니다.']]));
+    c.append(ownerLine('a2'));
+    const j = J();
+    const pv = el('p', 'lead'); derived.push(() => { pv.textContent = get('s1-task') ? '우리 핵심 업무: ' + get('s1-task') + (get('s1-out') ? ' → ' + get('s1-out') : '') : '①단계 핵심 업무를 먼저 쓰면 여기 나타납니다.'; }); c.append(pv);
+    const ind = el('div', 'item'); ind.append(el('div', 'where', '1. 각자 한 문장 — 팀원 모두 자기 줄에 씁니다'), el('p', 'lead', '옆 사람 문장을 보기 전에 먼저 씁니다. 사람마다 "잘했다"를 다르게 읽는다는 걸 여기서 확인합니다. 틀(산출물 · 기한 · 품질 · 결과)을 따라 쓰면 됩니다.'));
+    ind.append(el('p', 'pat', '[산출물]을 [기한] 안에 [품질 기준]으로 낸다 (+ [결과 기준])'));
+    members().forEach((m) => { const r = el('div', 'wurow' + (m === meName ? ' mine' : '')); r.append(el('span', 'nm', dn(m) + (m === meName ? ' (나)' : ''))); const t = el('textarea'); t.rows = 2; t.placeholder = m === meName ? '내 문장' : dn(m) + '의 문장'; bindText(t, 's2-my-' + m, null); r.append(t); ind.append(r); });
+    const cnt = el('p', 'clab'); derived.push(() => { const n = members().filter((m) => get('s2-my-' + m).trim()).length; cnt.textContent = `${n}/${members().length}명이 썼습니다` + (n >= 2 ? ' — 서로 다른 점(기한? 품질? 결과?)을 찾아보세요' : ''); }); ind.append(cnt);
+    c.append(ind);
+    c.append(writeBlock('s2-std', { title: '2. 팀 문장 — 담당이 위 문장들에서 좋은 부분을 합쳐 씁니다', pat: '[산출물]을 [기한] 안에 [품질 기준]으로 낸다 (+ [결과 기준])', ex: j.std, rows: 3 }));
+    const fr = el('input'); fr.type = 'text'; fr.placeholder = '어느 팀원 문장에서 무엇을 가져왔나 (예: 기한은 팀원 2, 품질 기준은 팀원 4 문장에서)'; bindText(fr, 's2-from', null); c.lastChild.append(fr);
+    const it = el('div', 'item'); it.append(el('div', 'where', '3. SMART로 점검 — 좋은 목표의 다섯 조건 (Specific 구체적 · Measurable 측정 가능 · Achievable 달성 가능 · Realistic 현실적 · Time-bound 기한이 있는). 확인 담당이 팀원과 함께 누릅니다'));
+    const tw = el('div', 'tw'); const tb = el('table', 'g'); tb.innerHTML = '<thead><tr><th>기준</th><th>질문</th><th>우리 문장은</th></tr></thead>'; const body = el('tbody');
+    [['S · Specific (구체적)', '누가 읽어도 같은 일을 떠올리나?'], ['M · Measurable (측정 가능)', '했는지 안 했는지 확인할 방법이 있나?'], ['A · Achievable (달성 가능)', '이 기업 · 신입 수준에서 해낼 수 있나?'], ['R · Realistic (현실적)', '이 회사의 시간 · 자원 · 데이터로 실제로 할 수 있고 잴 수 있나?'], ['T · Time-bound (기한이 있는)', '언제까지인지 있나?']].forEach(([a, q], i) => { const tr = el('tr'); const td = el('td'); td.append(marks('s2-sm' + i, [['예', 'ok'], ['애매', 'mid'], ['아니오', 'no']])); tr.append(el('th', null, a), el('td', null, q), td); body.append(tr); });
+    tb.append(body); tw.append(tb); it.append(tw); c.append(it);
+    c.append(stuck(['"성실히 수행한다", "높은 성과를 낸다" → 숫자나 기한, 확인할 수 있는 결과물로 바꿉니다.', '애매·아니오가 2개 이상이면 문장을 고친 뒤 다시 누릅니다.']));
+  }
+  function renderS3(c) {
+    head(c, 2, '무엇을 셀지 — 지표 4종을 섞어서 고릅니다');
+    c.append(concept([['핵심 개념', '성과지표 4종: 결과(조직·고객에 남은 결과) · 산출물(만든 것의 양·기한) · 행동·과정(일하는 방식) · 질·정확성(오류·완성도). 한 종류만 쓰면 그쪽으로만 일이 쏠립니다.'], ['칸마다', '지표 이름 · 측정 방법과 데이터 출처 · 목표와 측정 주기. 데이터를 공개자료로 확인할 수 없으면 [내부 자료 · 확인 불가]라고 씁니다.'], ['나눠 맡기', '지표 한 줄씩 팀원 한 명이 맡고(담당), 다른 한 명이 확인합니다. 5명 팀이면 남은 한 명이 정성 표현 바꿔쓰기를 맡습니다. 각 줄 왼쪽에 담당이 보입니다.'], ['완료 기준', '4종 모두 (이름 + 측정 방법) + 정성 표현 바꿔쓰기 1개']]));
+    const od = el('details', 'owners'); od.append(el('summary', null, '③ 담당·확인 바꾸기'));
+    [['a3R', '결과'], ['a3O', '산출물'], ['a3B', '행동·과정'], ['a3Q', '질·정확성'], ['a3qa', '정성 표현 바꿔쓰기']].forEach(([id, nm]) => { const g = el('div'); g.append(el('p', 'clab', nm), chipRow(id, 'own'), chipRow(id, 'chk')); od.append(g); });
+    const myL = el('p', 'lead'); derived.push(() => { const mine = ['a3R', 'a3O', 'a3B', 'a3Q', 'a3qa'].filter((id) => meName && owner(id) === meName).map((id) => TK(id).label.replace(/^③\s*/, '')); myL.textContent = meName ? (mine.length ? '내가 맡은 줄: ' + mine.join(', ') : '내가 담당인 줄이 없습니다 — 확인을 맡은 줄을 봐 주세요') : '위에서 내 자리를 고르면 내가 맡은 줄이 표시됩니다'; myL.style.color = 'var(--gold)'; myL.style.fontWeight = '700'; });
+    c.append(myL, od);
+    const j = J(); const it = el('div', 'item'); it.append(el('div', 'where', '지표 표 — 회색 줄은 예시입니다'));
+    const tw = el('div', 'tw'); const tb = el('table', 'g'); tb.innerHTML = '<thead><tr><th style="width:13%">종류</th><th>지표 이름</th><th>측정 방법 · 데이터 출처 · 주기</th><th style="width:22%">목표</th></tr></thead>'; const body = el('tbody');
+    KT.forEach(([t, nm, ds]) => {
+      const ex = j.kpi[t]; const er = el('tr', 'exr'); er.append(el('td', null, '(예)'), el('td', null, ex[0]), el('td', null, ex[1]), el('td', null, ex[2])); body.append(er);
+      const tr = el('tr'); const th = el('th'); th.append(el('span', 'kt', t), document.createElement('br'), document.createTextNode(nm)); const sm = el('div', 'clab', ds); th.append(sm); const ow = el('div', 'rowown'); derived.push(() => { const id = 'a3' + t; const mine = meName && owner(id) === meName; ow.textContent = `담당 ${dn(owner(id))} · 확인 ${dn(checker(id))}`; ow.classList.toggle('mine', !!mine); tr.classList.toggle('minerow', !!mine); }); th.append(ow); tr.append(th);
+      ['n', 'h', 'g'].forEach((f) => { const td = el('td'); const ta = el('textarea'); ta.rows = 2; ta.setAttribute('aria-label', nm + ' ' + f); derived.push(() => { const id = 'a3' + t; ta.placeholder = (meName && owner(id) === meName ? '내 칸 — ' : dn(owner(id)) + ' 담당 — ') + ({ n: '지표 이름', h: '어떻게 · 어디서 · 언제 재나', g: '목표 수준' })[f]; }); bindText(ta, `s3-${t}-${f}`, null); td.append(ta); tr.append(td); });
+      body.append(tr); const cr = el('tr', 'ckrow'); const cd = el('td'); cd.colSpan = 4; cd.append(ckBox('a3' + t)); cr.append(cd); body.append(cr); derived.push(() => { const id = 'a3' + t; cr.hidden = !((meName && checker(id) === meName) || get('ck-' + id) === '1' || get('ckn-' + id).trim()); });
+    });
+    tb.append(body); tw.append(tb); it.append(tw); c.append(it);
+    const qo = el('p', 'rowown'); derived.push(() => { const mine = meName && owner('a3qa') === meName; qo.textContent = `담당 ${dn(owner('a3qa'))} · 확인 ${dn(checker('a3qa'))}` + (mine ? '  ← 내 칸' : ''); qo.classList.toggle('mine', !!mine); }); c.append(qo, ckBox('a3qa'));
+    c.append(writeBlock('s3-qa', { title: '정성 표현을 관찰할 수 있는 기준으로 바꾸기', lead: '"잘한다·꼼꼼하다·창의적이다"는 평가자마다 다르게 읽습니다. 행동·품질·판정 기준이 보이게 바꿉니다. 숫자가 아니어도 됩니다.', pat: '✗ [흐릿한 표현] → ✓ [언제 · 무엇을 · 어떤 기준으로 하는가]', ex: `✗ ${j.qual[0]} → ✓ ${j.qual[1]}`, rows: 2 }));
+    peer(c);
+    c.append(el('p', 'notice', '오늘(월)은 여기까지입니다. 내일(화)은 이 지표로 "누가 · 어떻게" 평가할지 정하고, AI가 낸 지표 후보를 검증합니다. 표가 비어 있으면 내일 검증할 것이 없습니다.'));
+    c.append(stuck(['지표가 모두 결과(R)다 → 신입이 통제할 수 없는 외부 요인(경기·날씨)이 섞입니다. 행동·질을 하나씩 넣습니다.', '"만족도 90%"처럼 데이터를 구할 수 없는 지표 → 누가, 언제, 무엇으로 재나? 못 쓰면 다른 지표로.', '목표가 모두 "90% 이상" → 이 직무·이 기업에서 현실적인 수준인지 근거 한 줄.']));
+  }
+  function renderS4(c) {
+    head(c, 3, '누가 · 어떤 방법으로 평가하고, 어떤 오류를 막을까');
+    peerIn(c);
+    c.append(concept([['핵심 개념', '평가방법은 막고 싶은 오류에 따라 고릅니다. BARS = 점수마다 구체적 행동(앵커)을 적어 평가자마다 같은 뜻으로 읽게 함 · MBO = 목표를 함께 정하고 결과로 평가 · 강제할당 = 관대화·중심화를 막지만 협업을 해칠 수 있음.'], ['평가오류 6가지', '현혹 · 관대/엄격 · 중심화 · 논리적 오류 · 최근효과 · 상동적 태도 — 시험에 나오는 구분입니다.']]));
+    warmup(c, 2);
+    c.append(ownerLine('a4'));
+    const j = J();
+    const it1 = el('div', 'item'); it1.append(el('div', 'where', '1. 누가 평가하나 (여럿 고르면 다면평가)'));
+    const rr = el('div', 'chips'); const rb = RATERS.map((r) => { const b = el('button', 'chip', r); b.type = 'button'; b.onclick = () => { const s = new Set(get('s4-raters').split(',').filter(Boolean)); s.has(r) ? s.delete(r) : s.add(r); put('s4-raters', [...s].join(',')); ap(); refresh(); }; rr.append(b); return [r, b]; }); const ap = () => { const s = get('s4-raters').split(','); rb.forEach(([r, b]) => b.setAttribute('aria-pressed', String(s.includes(r)))); }; bound.push({ type: 'set', apply: ap }); ap(); it1.append(rr);
+    it1.append(el('p', 'lead', '평가자는 "사람"입니다. 사내 시스템 기록 · 산출물 같은 자료는 평가자가 판단할 때 보는 증거입니다. 무엇을 증거로 볼지도 고릅니다.'));
+    const er = el('div', 'chips'); er.append(el('span', 'clab', '증거 자료')); const EV = ['사내 시스템 기록', '산출물(문서·파일)', '관찰 메모', '요청자·고객 피드백']; const evb = EV.map((r) => { const b = el('button', 'chip', r); b.type = 'button'; b.onclick = () => { const s2 = new Set(get('s4-evid').split(',').filter(Boolean)); s2.has(r) ? s2.delete(r) : s2.add(r); put('s4-evid', [...s2].join(',')); apEv(); refresh(); }; er.append(b); return [r, b]; }); const apEv = () => { const s2 = get('s4-evid').split(','); evb.forEach(([r, b]) => b.setAttribute('aria-pressed', String(s2.includes(r)))); }; bound.push({ type: 'set', apply: apEv }); apEv(); it1.append(er); c.append(it1);
+    const it2 = el('div', 'item'); it2.append(el('div', 'where', '2. 무엇으로 점수를 매기나 (평가 방법) — 표를 읽고 하나 고릅니다'));
+    it2.append(el('p', 'lead', '같은 신입 MD 한결을 각 방법으로 평가하면 이렇게 됩니다. 우리 핵심 업무에 가장 맞는 것 하나를 고르고 이유를 씁니다.'));
+    it2.append(factTable5(['방법', '어떻게 하나', '한결이라면', '잘 맞는 업무', '주의'], [
+      ['평정척도', '항목(예: 정확성 · 협업)마다 1~5점 중 하나에 표시', '정확성 3점, 협업 4점… 각 점수의 뜻은 평가자 판단', '빨리 여러 사람을 평가해야 할 때', '"3점이 뭔데?"가 사람마다 달라 관대화 · 중심화가 생기기 쉬움'],
+      ['BARS (행동 앵커)', '점수마다 "이런 행동을 하는 사람"을 미리 적어 두고, 실제 행동이 가장 가까운 칸을 고름', '"보정 근거를 기록해 다음 발주에 반영" → 5점 칸에 맞나 확인', '행동이 눈에 보이는 업무 (기한 · 오류 · 응대)', '앵커를 만드는 데 시간이 듦 — 오늘 3번에서 직접 만듭니다'],
+      ['MBO (목표관리)', '기간 초에 상사와 목표를 합의하고, 끝에 달성 정도로 평가', '"3개월 결품 0개 · 폐기율 10% 이하"를 합의 → 달성률로 평가', '결과가 숫자로 나오는 업무 (영업 · MD · 마케팅)', '신입은 목표 수준을 정하기 어려움 · 숫자만 보면 "어떻게 했나"가 빠짐'],
+    ]));
+    it2.append(marks('s4-method', ['SCALE', 'BARS', 'MBO'].map((k) => [METHODS.find((m) => m[0] === k)[1], 'ok'])));
+    const mi = el('input'); mi.type = 'text'; mi.placeholder = '이유: (예) 기한·오류처럼 행동이 분명한 업무라 점수마다 행동을 적는 BARS가 맞다'; bindText(mi, 's4-mwhy', null); it2.append(mi);
+    it2.append(el('div', 'where', '점수를 어떻게 나누나 (함께 정할 것)'));
+    it2.append(factTable5(['방식', '어떻게 하나', '장점', '주의'], [
+      ['절대평가', '기준에 닿으면 몇 명이든 그 점수', '기준만 보면 되어 납득이 쉬움', '평가자가 후하면 모두 높게 나옴 (관대화)'],
+      ['강제할당 (상대평가)', '"S 10% · A 20% · B 40%…"처럼 등급 비율을 미리 정해 줄 세움', '관대화 · 중심화를 막음', '팀원끼리 경쟁해 협업이 줄 수 있음 · 신입 몇 명뿐이면 맞지 않음'],
+    ]));
+    it2.append(marks('s4-dist', [['절대평가', 'ok'], ['강제할당 (상대평가)', 'ok']]));
+    it2.append(el('p', 'clab', '참고: "다면평가"는 방법이 아니라 1번의 평가자를 여럿 고른 것입니다 (상사 + 동료 + 고객 등).'));
+    c.append(it2);
+    const it3 = el('div', 'item'); it3.append(el('div', 'where', '3. 핵심 업무의 행동 앵커 — 5점 · 3점 · 1점'), el('p', 'lead', '①단계 핵심 업무 하나만. 점수마다 "무엇을 하는 사람인가"가 보여야 합니다. 방법을 BARS로 고르지 않아도 씁니다(피드백 기준이 됩니다).'));
+    [['s4-b5', '5점 · 매우 우수', j.bars[0]], ['s4-b3', '3점 · 보통', j.bars[1]], ['s4-b1', '1점 · 미흡', j.bars[2]]].forEach(([k, l, ex]) => { const r = el('div', 'row'); r.append(el('span', 'tagc', l)); const w = el('div'); w.append(el('p', 'ex', '(예) ' + ex)); const ta = el('textarea'); ta.rows = 2; bindText(ta, k, null); w.append(ta); r.append(w); it3.append(r); });
+    c.append(it3);
+    c.append(ownerLine('a4e'));
+    quiz(c);
+    const it4 = el('div', 'item'); it4.append(el('div', 'where', '4. 우리 평가에서 가장 걱정되는 오류 (1~2개)'));
+    const eb = el('div', 'chips'); const ebs = ERRORS.map(([v, l, d]) => { const b = el('button', 'chip', l); b.title = d; b.type = 'button'; b.onclick = () => { const s = new Set(get('s4-err').split(',').filter(Boolean)); s.has(v) ? s.delete(v) : s.add(v); put('s4-err', [...s].join(',')); ap2(); refresh(); }; eb.append(b); return [v, b]; }); const ap2 = () => { const s = get('s4-err').split(','); ebs.forEach(([v, b]) => b.setAttribute('aria-pressed', String(s.includes(v)))); }; bound.push({ type: 'set', apply: ap2 }); ap2(); it4.append(eb);
+    const ed = el('p', 'lead'); derived.push(() => { const s = get('s4-err').split(',').filter(Boolean); ed.textContent = s.length ? s.map((v) => { const e = ERRORS.find((x) => x[0] === v); return `${e[1]} = ${e[2]}`; }).join(' · ') : '버튼을 누르면 뜻이 나옵니다.'; }); it4.append(ed);
+    const ef = el('textarea'); ef.rows = 2; ef.placeholder = '왜 우리 직무에서 그 오류가 생기기 쉬운가 + 무엇으로 막나 (예: 실적 시즌 직전 실수만 크게 보는 최근효과 → 분기 내내 업데이트 기록을 남겨 평가 때 같이 본다)'; bindText(ef, 's4-errfix', null); it4.append(ef); c.append(it4);
+    c.append(writeBlock('s4-ai', { title: '5. AI가 도운 일과 사람이 한 일, 무엇을 평가하나', lead: '신입이 AI를 써서 일한다면 "AI를 썼는가"가 아니라 사람만 할 수 있는 판단을 평가해야 합니다.', pat: 'AI가 [AI가 한 일]을 했다면, [사람이 한 판단·검증]을 평가한다', ex: j.ai, rows: 2 }));
+    c.append(stuck(['평가자가 직속 상사 하나뿐이다 → 1인 판단 편향. 시스템 기록·요청자 중 하나를 더할 수 있나?', '5점과 3점 앵커 차이가 "더 잘한다"뿐이다 → 5점만 하는 행동을 하나 넣습니다.', '"공정하게 평가한다"는 대책이 아닙니다 → 기록·복수 평가자·앵커 중 무엇으로 막나?']));
+  }
+  function aiPrompt() {
+    const k = KT.map(([t, nm]) => `- ${nm}: ${get(`s3-${t}-n`) || '[미작성]'} / ${get(`s3-${t}-h`) || ''} / 목표 ${get(`s3-${t}-g`) || ''}`).join('\n');
+    return `너는 대학 「인적자원관리」 수업에서 팀의 성과관리 설계를 검토하는 HR 담당자다.\n\n[우리 팀]\n- 기준직무: ${get('s1-job') || '[미작성]'}\n- 핵심 업무: ${get('s1-task') || '[미작성]'} → 산출물: ${get('s1-out') || '[미작성]'}\n- 성과기준: ${get('s2-std') || '[미작성]'}\n- 우리 지표:\n${k}\n\n[요청]\n1) 이 직무 신입에게 맞는 성과지표 후보를 결과·산출물·행동·질 중 빠진 종류 위주로 3개 제안하라. 각각 측정 방법과 데이터 출처를 붙여라.\n2) 우리 지표 중 신입이 통제할 수 없는 요인이 섞였거나, 숫자만 좇으면 생길 부작용이 있는 것을 지적하라.\n[규칙] 특정 기업의 실제 평가제도·수치를 지어내지 마라. 확실하지 않으면 "확인 필요"라고 써라. 답은 표로.`;
+  }
+  function renderS5(c) {
+    head(c, 4, 'AI가 낸 지표 후보를 4가지로 검증하고, 팀이 판정합니다');
+    c.append(concept([['핵심 개념', 'AI는 그럴듯한 일반 KPI를 많이 냅니다. 그 지표를 달성하면 정말 "이 직무를 잘한 것"인지는 팀이 판단합니다.'], ['4가지 검증', '직무 관련성(우리 핵심 업무와 직접 이어지나) · 현실성(이 기업·신입 수준) · 데이터 가능성(실제로 잴 수 있나) · 부작용(숫자만 좇으면 무엇을 놓치나)'], ['완료 기준', 'AI 제안 2개 이상 판정 + 그중 1개 이상은 "수정" 또는 "거절" + 판정 근거']]));
+    c.append(ownerLine('a5'));
+    const it = el('div', 'item'); it.append(el('div', 'where', '1. AI에게 보낼 질문 — 우리 팀 내용이 자동으로 들어갑니다'), el('p', 'lead', '학교 계정 AI 하나에 붙여 넣습니다. 팀원 이름·개인정보는 넣지 않습니다.'));
+    const out = el('div', 'out'); derived.push(() => { out.textContent = aiPrompt(); }); it.append(out);
+    const cb = el('button', 'btn primary', '질문 복사'); cb.type = 'button'; const cm = el('span', 'warnline'); cb.onclick = () => { const t = aiPrompt(); const ok = () => { cm.textContent = '복사했습니다.'; }; const fail = () => { const r = document.createRange(); r.selectNodeContents(out); const s = getSelection(); s.removeAllRanges(); s.addRange(r); cm.textContent = '복사가 막혀 글을 선택해 두었습니다. Ctrl+C(⌘+C)로 복사하세요.'; }; try { navigator.clipboard.writeText(t).then(ok, fail); } catch (e) { fail(); } }; const tl = el('div', 'tools'); tl.append(cb, cm); it.append(tl); c.append(it);
+    const it2 = el('div', 'item'); it2.append(el('div', 'where', '2. AI 제안 판정 — 2개 이상'));
+    const j = J();
+    const tw = el('div', 'tw'); const tb = el('table', 'g'); tb.innerHTML = '<thead><tr><th>AI가 제안·지적한 것</th><th>관련성 · 현실성 · 데이터 · 부작용</th><th>판정</th><th>판정 근거 (우리 업무·자료)</th></tr></thead>'; const body = el('tbody');
+    const er = el('tr', 'exr'); er.append(el('td', null, '(예) "고객 만족도 4.5점 이상"'), el('td', null, '관련성 ○ · 현실성 △ · 데이터 ✗ · 부작용 —'), el('td', null, '거절'), el('td', null, '신입 개인 단위로 만족도를 재는 데이터가 없음. 대신 ' + j.kpi.Q[0] + '를 유지')); body.append(er);
+    [0, 1, 2].forEach((i) => {
+      const tr = el('tr'); const t1 = el('td'); const a = el('textarea'); a.rows = 2; bindText(a, `s5-${i}-ai`, null); t1.append(a);
+      const t2 = el('td'); [['관련성', 'r'], ['현실성', 'a'], ['데이터', 'd'], ['부작용', 's']].forEach(([l, f]) => { const w = el('div'); w.style.marginBottom = '4px'; w.append(el('span', 'clab', l)); w.append(marks(`s5-${i}-${f}`, [['○', 'ok'], ['△', 'mid'], ['✗', 'no']])); t2.append(w); });
+      const t3 = el('td'); t3.append(marks(`s5-${i}-v`, [['채택', 'ok'], ['수정', 'mid'], ['거절', 'no']]));
+      const t4 = el('td'); const b = el('textarea'); b.rows = 3; bindText(b, `s5-${i}-why`, null); t4.append(b);
+      tr.append(t1, t2, t3, t4); body.append(tr);
+    });
+    tb.append(body); tw.append(tb); it2.append(tw);
+    const g = el('p', 'lead'); derived.push(() => { const rows = [0, 1, 2].filter((i) => get(`s5-${i}-v`)); const nonAdopt = rows.some((i) => get(`s5-${i}-v`) !== '채택'); g.textContent = rows.length && !nonAdopt ? '모두 "채택"입니다. 4가지 검증에서 △·✗가 나온 제안이 정말 없었나요?' : ''; g.style.color = 'var(--warn)'; }); it2.append(g);
+    it2.append(checkLabel('s5-apply', '채택·수정한 지표를 ③단계 표에 실제로 반영했다')); c.append(it2);
+    c.append(stuck(['AI가 특정 기업의 평가제도를 사실처럼 말했다 → 기업 자료로 확인했나? 못 했으면 [확인 필요]로 두고 근거로 쓰지 않습니다.', '"직원 몰입도", "혁신 지수"처럼 신입 개인이 통제할 수 없는 지표 → 관련성·현실성 △ 이하입니다.']));
+  }
+  const FBLOCKS = [['A 도입', [['표지 · 한 장 요약', 'later'], ['왜 이 기업·직무인가', 'later']]], ['B 뽑기', [['우리가 따라간 신입 한 사람', 'past'], ['뽑기 — 채용관리', 'past']]], ['C 키우기·평가·보상', [['키우기 — 교육훈련 + 경력개발', 'past'], ['평가하고 보상하기 (보고서 2.4·2.5)', 'now']]], ['D 점검', [['법·공정성·포용 · 조직문화', 'later'], ['정합성 지도', 'later']]], ['E 해결', [['핵심 문제와 근본원인', 'later'], ['개선안 · 실행 · 검증 지표', 'later'], ['결론 · 한계 · AI 활용과 팀 기여', 'later']]]];
+  const RCH = [
+    ['co', '1. 기업 소개', '사업 · 규모 · 최근 이슈 한 쪽', '기업 홈페이지 · 사업보고서(DART) · 기사 — 출처와 날짜'],
+    ['ind', '2. 산업 동향', '산업 구조 · 경쟁사 · AI 등 변화 → 어떤 인재가 더 필요해지나', '산업 보고서 · 기사 · 통계'],
+    ['tal', '3. 인재상', '기업이 밝힌 인재상 vs 2주차 미래 인재상 → 우리 팀이 정의한 인재상', '채용 페이지 · 2주차 탐색'],
+    ['job', '4. 기준 직무 · 직무분석', '직무기술서 · 직무명세서(KSAO)', '3주차 직무기술서'],
+    ['hire', '5. 확보 — 채용 · 선발', '채용 공고 분석 · 선발 기준 · 면접 질문', '4주차 채용 산출물'],
+    ['dev', '6. 개발 — 교육훈련', '교육 필요 · 프로그램 · 효과 측정(L1~L4)', '교육훈련 워크시트'],
+    ['pm', '7. 평가 — 성과관리 ★ 오늘', '성과기준 · 지표 · 평가 방법 · 오류 대책 · AI 검증', '이 워크시트 PDF'],
+    ['pay', '8. 보상 · 복리후생', '무엇에 보상하나(직무 · 역량 · 성과) · 복리후생', '다음 수업 · ⑥에서 넘긴 것'],
+    ['car', '9. 경력개발 · 조직문화 · 인재 유지', '성장 경로 · 멘토링 · 문화 진단 · 이직 방지', '해당 수업 산출물'],
+    ['law', '10. 법 · 공정성 · 다양성(DEI)', '근로기준법 점검 · 차별 금지 · 포용', 'law.go.kr 원문 확인'],
+    ['imp', '11. HRM 개선 제안', '핵심 문제 → 원인 → 개선안 → 실행 · 검증 지표', '1~10장 종합'],
+    ['end', '12. AI 활용과 검증 · 팀 기여 · 참고문헌', '단계별 AI 사용과 판정 · 누가 무엇을 했나 · 출처 목록', '각 워크시트의 AI 판정 칸'],
+  ];
+  const RST = [['완료', 'ok'], ['초안 있음', 'mid'], ['아직', 'no'], ['수업 예정', 'mid']];
+  function slotPick(key, multi) {
+    const row = el('div', 'chips'); const bs = members().map((m) => { const b = el('button', 'chip', dn(m)); b.type = 'button'; b.onclick = () => { if (multi) { const st = new Set(get(key).split(',').filter(Boolean)); st.has(m) ? st.delete(m) : st.add(m); put(key, [...st].join(',')); } else put(key, get(key) === m ? '' : m); ap(); refresh(); }; row.append(b); return [m, b]; });
+    const ap = () => { const v = get(key).split(','); bs.forEach(([m, b]) => b.setAttribute('aria-pressed', String(v.includes(m)))); }; bound.push({ type: 'set', apply: ap }); ap(); return row;
+  }
+  function roadmap() {
+    const it = el('div', 'item');
+    it.append(el('div', 'where', '4. 최종 보고서 · 발표 로드맵 — 지금 어디까지 왔고, 누가 무엇을 맡나'));
+    it.append(el('p', 'lead', '15주차 최종 보고서와 발표는 아래 12개 장으로 묶입니다. 장마다 지금 상태와 담당을 정하고, 자료가 어디 있는지 적어 둡니다. 이 표가 팀의 남은 일 목록이 됩니다. 팀원 누구나 고칠 수 있고 모두의 화면에 같이 보입니다.'));
+    const roles = el('div', 'rmroles'); [['rp-r-rep', '보고서 편집 (문서 템플릿 · 형식 통일 · 최종 합치기)', false], ['rp-r-slide', '발표자료 편집 (PPT 템플릿 · 디자인 통일)', false], ['rp-r-src', '출처 · 참고문헌 관리 (링크 · 날짜 · AI 판정 기록)', false], ['rp-r-pres', '발표자 (여럿 가능)', true]].forEach(([k, l, mul]) => { const d = el('div', 'rmrole'); d.append(el('b', null, l), slotPick(k, mul)); roles.append(d); });
+    it.append(el('div', 'wlab2', '먼저 역할 4가지 — 장 담당과 별도로 문서 전체를 책임지는 사람'), roles);
+    const tw = el('div', 'tw'); const tb = el('table', 'g rm'); tb.innerHTML = '<thead><tr><th style="width:20%">장</th><th>담을 것 · 가져올 곳</th><th style="width:22%">지금 상태</th><th style="width:20%">담당</th><th>자료 위치 · 남은 일</th></tr></thead>'; const bd = el('tbody');
+    RCH.forEach(([id, nm, what, src]) => {
+      const tr = el('tr', id === 'pm' ? 'now' : ''); const th = el('th'); th.append(el('b', null, nm)); tr.append(th);
+      const w = el('td'); w.append(el('div', null, what), el('div', 'clab', '← ' + src)); tr.append(w);
+      const stc = el('td'); stc.append(marks('rp-st-' + id, RST)); if (id === 'pm') { const pg = el('div', 'clab'); derived.push(() => { pg.textContent = '이 워크시트 진행: ' + Math.round(REQ().filter((k) => get(k).trim()).length / REQ().length * 100) + '%'; }); stc.append(pg); } tr.append(stc);
+      const oc = el('td'); oc.append(slotPick('rp-o-' + id, true)); tr.append(oc);
+      const nc = el('td'); const ta = el('textarea'); ta.rows = 2; ta.placeholder = id === 'pm' ? '(예) DOOR 11/10 PDF · 보상 연결 문장 다듬기' : '(예) 팀 Drive 3주차 폴더 · 출처 날짜 추가'; bindText(ta, 'rp-n-' + id, null); nc.append(ta); tr.append(nc);
+      bd.append(tr);
+    });
+    tb.append(bd); tw.append(tb); it.append(tw);
+    const sum = el('p', 'notice'); derived.push(() => { const cnt = (v) => RCH.filter(([id]) => get('rp-st-' + id) === v).length; const none = RCH.filter(([id]) => !get('rp-o-' + id)).length; sum.textContent = `완료 ${cnt('완료')} · 초안 ${cnt('초안 있음')} · 아직 ${cnt('아직')} · 수업 예정 ${cnt('수업 예정')} · 상태 미선택 ${RCH.filter(([id]) => !get('rp-st-' + id)).length}  |  담당 없는 장 ${none}개`; }); it.append(sum);
+    it.append(el('div', 'wlab2', '다음 수업 전까지 — 누가 · 무엇을'));
+    const nx = el('textarea'); nx.rows = 3; nx.placeholder = '(예) 팀원 2: 1장 기업 소개 출처 3개 정리 / 팀원 4: 보고서 템플릿에 4~7장 옮기기 / 팀원 1: 발표자료 표지·목차'; bindText(nx, 'rp-next', null); it.append(nx);
+    return it;
+  }
+  function renderS6(c) {
+    head(c, 5, '평가 결과를 어디에 쓰고, 보상관리로 무엇을 넘길까');
+    c.append(concept([['핵심 개념', '인사고과는 확보·개발·보상·유지·방출·직무설계의 기초자료입니다. 결과를 쓰는 곳이 없으면 평가는 점수 매기기로 끝납니다.'], ['다음 주와 연결', '보상관리는 "무엇에 보상하나(직무·역량·성과)"에서 출발합니다. 오늘 기준과 지표 중 무엇이 기본급(역량)으로, 무엇이 성과급(결과)으로 가야 하는지 정해 넘깁니다.']]));
+    c.append(ownerLine('a6'));
+    const j = J();
+    c.append(writeBlock('s6-use', { title: '1. 평가 결과를 어디에 쓰나', lead: '개발(피드백·교육) · 보상 · 배치·이동 중 우리 직무에 맞는 곳과, 중간 피드백을 언제 하는지.', pat: '평가 결과는 [개발·보상·이동]에 쓴다. 중간 피드백은 [언제] [누가] [무엇으로] 한다.', ex: '결과는 다음 분기 교육 과제(개발)와 성과급(보상)에 쓴다. 중간 피드백은 입사 6주·12주에 멘토가 ④단계 앵커로 1:1 면담한다.', rows: 2 }));
+    c.append(writeBlock('s6-hand', { title: '2. 보상관리로 넘길 것 + 우리 팀에 남은 질문', pat: '[성과기준·지표]는 [기본급·성과급·인정] 과 이어져야 한다 — 남은 질문: [공정성 질문]', ex: j.hand, rows: 3 }));
+    const it = el('div', 'item'); it.append(el('div', 'where', '3. 오늘 결과를 PDF로 저장'), el('p', 'lead', '팀원 모두가 쓴 내용이 한 문서로 저장됩니다. 저장한 PDF를 팀 대표 1명이 DOOR에 올립니다(제출처는 교수님 안내 기준). 비어 있는 칸은 "(아직 안 씀)"으로 나옵니다.'));
+    const t = el('div', 'tools'); const pb = el('button', 'btn primary', 'PDF로 저장'); pb.type = 'button'; const pm = el('span', 'warnline'); pb.onclick = () => savePDF(pb, pm); t.append(pb, pm); it.append(t); c.append(it);
+    c.append(roadmap());
+    const it3 = el('div', 'item'); it3.append(el('div', 'where', '5. 제출 전 확인'));
+    [['c1', '핵심 업무 → 성과기준 → 지표 → 앵커가 한 줄로 이어진다'], ['c2', '지표 4종이 모두 있고, 데이터 출처가 있다(없으면 [확인 불가])'], ['c3', 'AI 제안마다 근거를 들어 채택 · 수정 · 거절을 판정했다'], ['c4', '보상으로 넘길 것과 남은 공정성 질문이 있다']].forEach(([k, l]) => it3.append(checkLabel('s6-' + k, ' ' + l)));
+    c.append(it3);
+  }
+  const RENDER = [renderS1, renderS2, renderS3, renderS4, renderS5, renderS6];
+
+  // ---------------- 결과 묶음 (PDF · 교수 현황) ----------------
+  function results() {
+    const err = get('s4-err').split(',').filter(Boolean).map((v) => (ERRORS.find((e) => e[0] === v) || [])[1]).join(', ');
+    return [
+      { h: '팀', rows: [['팀 이름', dispName()], ['팀원 · 역할', slotList().map(([n, r]) => `${dn(n)}(${r})`).join(', ')]] },
+      { h: '① 핵심 업무', rows: [['기준직무', get('s1-job')], ['핵심 업무', get('s1-task')], ['산출물', get('s1-out')], ['교육훈련에서 가져온 것', get('s1-from')]] },
+      { h: '② 성과기준', rows: [...members().map((m) => [`각자 문장 · ${dn(m)}`, get('s2-my-' + m)]), ['팀 성과기준', get('s2-std')], ['어디서 가져왔나', get('s2-from')], ['SMART 점검', ['S', 'M', 'A', 'R', 'T'].map((x, i) => `${x} ${get('s2-sm' + i) || '-'}`).join(' · ')]] },
+      { h: '③ 성과지표', rows: [...KT.map(([t, nm]) => [nm, [get(`s3-${t}-n`), get(`s3-${t}-h`), get(`s3-${t}-g`) && '목표 ' + get(`s3-${t}-g`)].filter(Boolean).join(' / ')]), ['정성 표현 바꿔쓰기', get('s3-qa')]] },
+      { h: '④ 평가 방법과 오류', rows: [['평가자', get('s4-raters').split(',').filter(Boolean).join(', ')], ['점수 나누는 방식', get('s4-dist')], ['증거 자료', get('s4-evid').split(',').filter(Boolean).join(', ')], ['방법 · 이유', [get('s4-method'), get('s4-mwhy')].filter(Boolean).join(' — ')], ['5점 앵커', get('s4-b5')], ['3점 앵커', get('s4-b3')], ['1점 앵커', get('s4-b1')], ['막을 오류 · 대책', [err, get('s4-errfix')].filter(Boolean).join(' — ')], ['AI가 도운 일의 평가', get('s4-ai')]] },
+      { h: '⑤ AI 제안 검증', rows: [0, 1, 2].map((i) => [`제안 ${i + 1}`, get(`s5-${i}-ai`) ? `${get(`s5-${i}-ai`)} → ${get(`s5-${i}-v`) || '판정 전'} (관련성 ${get(`s5-${i}-r`) || '-'} · 현실성 ${get(`s5-${i}-a`) || '-'} · 데이터 ${get(`s5-${i}-d`) || '-'} · 부작용 ${get(`s5-${i}-s`) || '-'}) · 근거: ${get(`s5-${i}-why`)}` : '']) },
+      { h: '참여 활동 · 워밍업 실험 · 교차 점검 · 퀴즈', rows: [['한결 점수 (처음 → BARS)', members().map((m) => `${dn(m)} ${get('wu1-' + m) || '-'}→${get('wu2-' + m) || '-'}`).join(', ')], ['무엇이 달라졌나', get('wu-why')], ['짝 팀에 준 의견', myPv() ? KT.map(([t, nm]) => get('pvo-' + t) ? `${nm} ${get('pvo-' + t)}: ${get('pvr-' + t)}` : '').filter(Boolean).join(' / ') : ''], ['받은 의견 반영', TEAMS.filter((t) => get('pvin-' + t.key)).map((t) => `${t.label} ${get('pvin-' + t.key)} — ${get('pvinw-' + t.key)}`).join(' / ')], ['평가오류 퀴즈', get('qz-done') === '1' ? qzScore(Object.assign({}, vals)) + ' / 12점' : '']] },
+      { h: '최종 보고서 · 발표 로드맵', rows: [['역할', `보고서 편집 ${get('rp-r-rep') ? dn(get('rp-r-rep')) : '-'} · 발표자료 편집 ${get('rp-r-slide') ? dn(get('rp-r-slide')) : '-'} · 출처 관리 ${get('rp-r-src') ? dn(get('rp-r-src')) : '-'} · 발표 ${get('rp-r-pres').split(',').filter(Boolean).map(dn).join(', ') || '-'}`], ...RCH.map(([id, nm]) => [nm, [get('rp-st-' + id) || '상태 미선택', get('rp-o-' + id).split(',').filter(Boolean).map(dn).join(', '), get('rp-n-' + id)].filter(Boolean).join(' · ')]), ['다음 수업 전까지', get('rp-next')]] },
+      { h: '⑥ 활용 · 보상으로 넘길 것', rows: [['결과 활용 · 중간 피드백', get('s6-use')], ['보상관리로 넘길 것 · 남은 질문', get('s6-hand')]] },
+    ];
+  }
+  const loadScript = (src) => new Promise((ok, no) => { if (document.querySelector(`script[src="${src}"]`)) return ok(); const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => no(new Error('load')); document.head.append(s); });
+  const PMODE = { mon: ['11/9 ①~③', (h) => /^(팀|①|②|③|참여)/.test(h), '1109_월'], tue: ['11/10 ④~⑥', (h) => /^(팀|④|⑤|⑥|참여)/.test(h), '1110_화'], toc: ['최종 보고서 로드맵', (h) => /^(팀|최종 보고서)/.test(h), '로드맵'], all: ['전체', () => true, '전체'] };
+  function reportNode(mode) {
+    mode = mode || 'all';
+    const n = document.createElement('div');
+    n.style.cssText = 'position:absolute;left:-10000px;top:0;width:760px;padding:36px 40px;background:#ffffff;color:#1d2433;font-family:"Noto Sans KR","Malgun Gothic",sans-serif;font-size:13px;line-height:1.65;';
+    const top = document.createElement('div'); top.style.cssText = 'border-bottom:3px solid #1b2a4a;padding-bottom:10px;margin-bottom:16px;';
+    top.innerHTML = '<div style="color:#b98a3d;font-size:11px;font-weight:700">인적자원관리(키스톤디자인) · 성과관리와 인사평가 · 팀 워크시트 결과</div>';
+    const h = document.createElement('div'); h.style.cssText = 'font-size:22px;font-weight:700;color:#1b2a4a;margin-top:4px;'; h.textContent = dispName() + ' · 성과관리 결과 (' + PMODE[mode][0] + ')'; top.append(h);
+    const d = document.createElement('div'); d.style.cssText = 'font-size:12px;color:#5d6679;'; d.textContent = new Date().toLocaleString('ko-KR') + ' 저장'; top.append(d); n.append(top);
+    results().filter((x) => PMODE[mode][1](x.h)).forEach((s) => {
+      const sh = document.createElement('div'); sh.className = 'pb'; sh.style.cssText = 'font-size:15px;font-weight:700;color:#1b2a4a;margin:18px 0 6px;padding-left:8px;border-left:4px solid #b98a3d;'; sh.textContent = s.h; n.append(sh);
+      const tb = document.createElement('table'); tb.style.cssText = 'width:100%;border-collapse:collapse;';
+      s.rows.forEach(([a, b]) => { const tr = document.createElement('tr'); tr.className = 'pb'; const c1 = document.createElement('td'); c1.style.cssText = 'width:30%;vertical-align:top;padding:7px 10px;border:1px solid #dde1ea;background:#f5f6f9;font-weight:600;font-size:12px;'; c1.textContent = a; const c2 = document.createElement('td'); c2.style.cssText = 'vertical-align:top;padding:7px 10px;border:1px solid #dde1ea;white-space:pre-wrap;'; const v = b && String(b).trim(); c2.textContent = v ? b : '(아직 안 씀)'; if (!v) c2.style.color = '#a3621b'; tr.append(c1, c2); tb.append(tr); });
+      n.append(tb);
+    });
+    const f = document.createElement('div'); f.className = 'pb'; f.style.cssText = 'margin-top:18px;font-size:11px;color:#5d6679;'; f.textContent = '기업 자료로 확인하지 않은 내용은 [확인 필요]로 남겨 두세요.'; n.append(f);
+    return n;
+  }
+  async function savePDF(btn, msg, mode) {
+    mode = mode || 'all';
+    btn.disabled = true; msg.textContent = 'PDF를 만드는 중…'; let node = null;
+    try {
+      const dl = window.claude && window.claude.use ? await window.claude.use('downloads') : null;
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+      node = reportNode(mode); document.body.append(node);
+      const SC = 2; const canvas = await window.html2canvas(node, { scale: SC, backgroundColor: '#ffffff' });
+      const base = node.getBoundingClientRect().top; const breaks = [...node.querySelectorAll('.pb')].map((e) => Math.round((e.getBoundingClientRect().top - base) * SC)).filter((y) => y > 0);
+      const pdf = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' }); const PW = 595.28, PH = 841.89, M = 24, iw = PW - 2 * M, ratio = iw / canvas.width, maxH = Math.floor((PH - 2 * M) / ratio);
+      let y = 0, first = true;
+      while (y < canvas.height) { let end = Math.min(y + maxH, canvas.height); if (end < canvas.height) { const cand = breaks.filter((b) => b > y + 200 && b <= end); if (cand.length) end = cand[cand.length - 1]; } const sl = document.createElement('canvas'); sl.width = canvas.width; sl.height = end - y; const cx = sl.getContext('2d'); cx.fillStyle = '#ffffff'; cx.fillRect(0, 0, sl.width, sl.height); cx.drawImage(canvas, 0, y, canvas.width, end - y, 0, 0, canvas.width, end - y); if (!first) pdf.addPage(); first = false; pdf.addImage(sl.toDataURL('image/jpeg', 0.92), 'JPEG', M, M, iw, (end - y) * ratio); y = end; }
+      const fname = `HRM_성과관리_${dispName().replace(/[\\/:*?"<>|]/g, '')}_${PMODE[mode][2]}.pdf`;
+      if (dl) { const r = await dl.save({ filename: fname, data: pdf.output('blob') }); msg.textContent = (r && r.note) || '저장했습니다. DOOR에 올려 주세요.'; }
+      else pdfOut(pdf, fname, msg, '저장했습니다. DOOR에 올려 주세요.');
+    } catch (e) { const code = e && e.code; msg.textContent = code === 'declined' ? '저장을 취소했습니다.' : e && e.message === 'load' ? 'PDF 도구를 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.' : '저장하지 못했습니다. 다시 시도해 주세요.'; }
+    finally { if (node) node.remove(); btn.disabled = false; }
+  }
+
+  // ---------------- 화면 ----------------
+  const dispName = () => (team ? (get('teamname').trim() || team.label) : '');
+  function syncName() { if (!team) return; const i = $('tnin'); if (i && document.activeElement !== i && i.value !== get('teamname')) i.value = get('teamname'); $('tname').textContent = dispName(); }
+  function loadMe() { try { meName = localStorage.getItem('hrmpm-me-' + team.key) || ''; } catch (e) { meName = ''; } if (!members().includes(meName)) meName = ''; }
+  function renderMe() {
+    const box = $('mepick'); box.replaceChildren();
+    const roleOf = (m) => (slotList().find((x) => x[0] === m) || [])[1] || '';
+    const taken = (m) => !!(get('nm-' + m) || '').trim();
+    const byOther = (m) => taken(m) && vals['nm-' + m] && vals['nm-' + m].by && me && vals['nm-' + m].by !== me;
+    const hint = el('p', 'clab'); hint.style.width = '100%'; hint.style.margin = '0';
+    members().forEach((m) => {
+      const b = el('button', 'chip slot' + (taken(m) ? ' taken' : ''));
+      b.type = 'button'; b.setAttribute('aria-pressed', String(m === meName));
+      b.append(el('b', null, taken(m) ? dn(m) : '비어 있음'), document.createTextNode(' · ' + roleOf(m)));
+      b.onclick = () => {
+        if (meName === m) { meName = ''; }
+        else if (byOther(m) && b.dataset.arm !== '1') { b.dataset.arm = '1'; hint.textContent = `이미 ${dn(m)} 님이 고른 자리입니다. 본인이 다른 기기로 들어온 경우에만 한 번 더 누르세요.`; hint.style.color = 'var(--warn)'; return; }
+        else { meName = m; }
+        try { localStorage.setItem('hrmpm-me-' + team.key, meName); } catch (e) {}
+        renderMe(); renderSteps(); renderStage();
+        if (meName && !taken(meName)) { const f = box.querySelector('input'); if (f) f.focus(); }
+      };
+      box.append(b);
+    });
+    if (!meName) { hint.textContent = '이름이 보이는 자리는 이미 누가 고른 자리입니다. 팀에서 정한 내 역할의 "비어 있음" 자리를 누르고 이름을 입력하세요. 역할이 정해지지 않았다면 팀원과 먼저 정합니다.'; box.append(hint); }
+    else {
+      const ni = el('input'); ni.type = 'text'; ni.placeholder = '내 이름'; ni.value = get('nm-' + meName); ni.style.maxWidth = '200px';
+      ni.onchange = () => { put('nm-' + meName, ni.value.trim()); renderMe(); renderBoard(); renderStage(); };
+      ni.onkeydown = (e) => { if (e.key === 'Enter') ni.blur(); };
+      box.append(ni);
+      if (!taken(meName)) { hint.textContent = '이름을 쓰고 Enter — 팀원 화면에 내 자리가 이름으로 바뀝니다.'; box.append(hint); }
+    }
+    const sc = el('div', 'slotctl'); sc.append(el('span', 'clab', `자리 ${nSlots()}개`));
+    const add = el('button', 'btn ghost', '+ 자리 추가'); add.type = 'button'; add.onclick = () => { put('nslots', String(Math.min(8, nSlots() + 1))); renderMe(); renderBoard(); renderStage(); };
+    const rm = el('button', 'btn ghost', '− 빈 자리 빼기'); rm.type = 'button'; const last = members()[members().length - 1]; rm.disabled = nSlots() <= 1 || !!(get('nm-' + last) || '').trim();
+    rm.onclick = () => { put('nslots', String(nSlots() - 1)); renderMe(); renderBoard(); renderStage(); };
+    sc.append(add, rm, el('span', 'clab', 'DOOR 팀원 수와 다르면 맞춥니다 (맨 뒤 빈 자리만 뺄 수 있음)')); box.append(sc);
+    const mine = TASKS().filter((x) => owner(x.id) === meName); $('mytask').textContent = meName ? `#${dn(meName)} · 내 칸 ${mine.length}개 · 끝낸 것 ${mine.filter((x) => x.done()).length}개` : '';
+  }
+
+  function renderBoard() {
+    const bd = $('board'); if (!bd || !team) return; bd.replaceChildren(); const ts = TASKS();
+    const claimed = members().filter((m) => (get('nm-' + m) || '').trim()); const vac = (m) => !(get('nm-' + m) || '').trim();
+    const orphan = ts.filter((x) => vac(owner(x.id)) || vac(checker(x.id)));
+    if (claimed.length && orphan.length && claimed.length < members().length) {
+      const bar = el('div', 'orph'); bar.append(el('span', null, `비어 있는 자리에 걸린 칸 ${orphan.length}개 — 오늘 안 온 팀원이 있거나 자리를 아직 안 골랐습니다.`));
+      const b = el('button', 'btn', '들어온 팀원에게 나눠 주기'); b.type = 'button';
+      b.onclick = () => { let i = 0; ts.forEach((x) => { if (vac(owner(x.id))) { put('own-' + x.id, claimed[i++ % claimed.length]); } }); ts.forEach((x, j) => { if (vac(checker(x.id)) || checker(x.id) === owner(x.id)) { const c = claimed.find((m, k) => m !== owner(x.id) && k >= (j % claimed.length)) || claimed.find((m) => m !== owner(x.id)) || ''; if (c) put('chk-' + x.id, c); } }); refresh(); renderMe(); renderStage(); };
+      bar.append(b); bd.append(bar);
+    }
+    const SKIP = /^(nm-|own-|chk-|ck-|wu|pv|qz|teamname)/;
+    const started = (x) => Object.keys(vals).some((k) => k.startsWith(`s${x.st + 1}-`) && String(vals[k].v || '').trim());
+    const st = (x) => x.done() ? ['완료', 'ok'] : started(x) ? ['작성 중', 'mid'] : ['시작 전', 'no'];
+    slotList().forEach(([n, r]) => {
+      const claimed = (get('nm-' + n) || '').trim(); const dev = claimed && vals['nm-' + n] ? vals['nm-' + n].by : '';
+      const c = el('div', 'mem' + (n === meName ? ' me' : '') + (claimed ? '' : ' vacant'));
+      const top = el('div', 'mtop'); top.append(el('span', 'nm', claimed || '비어 있는 자리'), el('span', 'rl', r)); c.append(top);
+      const own = ts.filter((x) => owner(x.id) === n), chk = ts.filter((x) => checker(x.id) === n);
+      const dn2 = own.filter((x) => x.done()).length; const cd = chk.filter((x) => get('ck-' + x.id) === '1').length;
+      const mine = dev ? Object.keys(vals).filter((k) => !SKIP.test(k) && vals[k].by === dev && String(vals[k].v || '').trim()).length : 0;
+      const sum = el('div', 'msum');
+      const bar = el('div', 'mbar'); const fill = el('span'); fill.style.width = (own.length ? Math.round(dn2 / own.length * 100) : 0) + '%'; bar.append(fill);
+      sum.append(el('span', null, `맡은 칸 ${dn2}/${own.length} 완료`), bar, el('span', null, `확인 ${cd}/${chk.length}`), el('span', null, claimed ? `직접 쓴 칸 ${mine}개` : '아직 자리를 고르지 않음'));
+      c.append(sum);
+      const ul = el('ul');
+      own.forEach((x) => { const [t, cl] = st(x); const li = el('li'); li.append(el('span', 'stt ' + cl, t), document.createTextNode(' 담당 · ' + x.label)); ul.append(li); });
+      chk.forEach((x) => { const ok = get('ck-' + x.id) === '1'; const li = el('li'); li.append(el('span', 'stt ' + (ok ? 'ok' : x.done() ? 'mid' : 'no'), ok ? '확인함' : x.done() ? '확인 차례' : '대기'), document.createTextNode(' 확인 · ' + x.label)); ul.append(li); });
+      c.append(ul); bd.append(c);
+    });
+  }
+
+  function renderChain() {
+    const c = $('tchain'); if (!c || !team) return; c.replaceChildren();
+    const L = [['직무분석', get('s1-job') || team.jobline + (team.alts && get('s1-alt') ? ' — ' + J().name : '')], ['교육훈련', get('s1-from') || '교육목표·L3 지표 (없으면 [교육훈련 미작성])'], ['성과관리 · 오늘', [get('s1-task'), get('s2-std')].filter(Boolean).join(' → ') || '핵심 업무 → 성과기준 → 지표 → 앵커'], ['보상 · 다음 주', get('s6-hand') || '⑥단계에서 넘길 것을 정합니다'], ['경력개발 이후', '평가 결과를 성장 경로·이동에 어떻게 쓸지']];
+    L.forEach(([a, b], i) => { const r = el('div', 'link' + (i === 2 ? ' now' : '')); r.append(el('b', null, a), el('span', null, b)); c.append(r); });
+  }
+  const REQ = () => ['s1-job', 's1-task', 's1-out', 's2-std', 's3-R-n', 's3-O-n', 's3-B-n', 's3-Q-n', 's3-qa', 's4-method', 's4-b5', 's4-b3', 's4-b1', 's4-err', 's4-errfix', 's4-ai', 's5-0-ai', 's5-0-v', 's5-0-why', 's5-1-ai', 's5-1-v', 's5-1-why', 's6-use', 's6-hand'];
+  function progress() {
+    if (!team) return; const req = REQ(); const done = req.filter((k) => get(k).trim()).length; const pct = Math.round(done / req.length * 100);
+    $('barfill').style.width = pct + '%'; $('barlab').textContent = `${dispName()} · 진행률 ${pct}% (${done}/${req.length}칸)`;
+    document.querySelectorAll('#steps .dot').forEach((d, i) => d.classList.toggle('done', !!STEPS[i].done()));
+  }
+  function renderSteps() {
+    const n = $('steps'); n.replaceChildren();
+    STEPS.forEach((s, i) => { const b = el('button'); b.type = 'button'; b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', String(i === step)); b.append(el('span', 'dot' + (s.done() ? ' done' : '')), el('span', 'dd ' + s.day, s.day === 'mon' ? '월' : '화'), document.createTextNode(s.name)); const cnt = meName ? TASKS().filter((x) => x.st === i && owner(x.id) === meName && !x.done()).length : 0; if (cnt) b.append(el('span', 'mine', '내 칸 ' + cnt)); b.onclick = () => { step = i; renderSteps(); renderStage(); }; n.append(b); });
+  }
+  function renderStage() {
+    bound = []; derived = []; const c = $('stage'); c.replaceChildren(); RENDER[step](c);
+    const g = el('p', 'gate'); derived.push(() => { const d = STEPS[step].done(); g.className = 'gate' + (d ? ' ok' : ''); g.textContent = d ? '이 단계 완료.' : '아직 비어 있는 칸이 있습니다.'; });
+    const nav = el('div', 'tools'); nav.style.marginTop = '18px'; nav.append(g);
+    if (step < STEPS.length - 1) { const b = el('button', 'btn primary', '다음 단계 →'); b.type = 'button'; b.onclick = () => { step++; renderSteps(); renderStage(); const h = document.querySelector('header.top'); window.scrollTo({ top: Math.max(0, $('steps').getBoundingClientRect().top + window.scrollY - (h ? h.offsetHeight : 0) - 8) }); }; nav.append(b); }
+    c.append(nav); refresh();
+  }
+  function pickTeam(t) {
+    team = t; step = 0; Object.keys(vals).forEach((k) => delete vals[k]); if (!local && db) applyOutbox(t.key);
+    document.querySelectorAll('#teams button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.key === t.key)));
+    try { localStorage.setItem('hrmpm-team', t.key); } catch (e) {}
+    ['teamcard', 'steps', 'stage', 'savecard'].forEach((id) => { $(id).hidden = false; }); renderSave(); $('emptymsg').hidden = true;
+    $('tjobtag').textContent = ''; $('tnin').value = ''; $('tnin').placeholder = t.label; $('tjob').textContent = t.jobline; $('tnow').textContent = t.now;
+    if (unsub) { try { unsub(); } catch (e) {} unsub = null; }
+    if (local || !db) { try { Object.keys(localStorage).filter((k) => k.startsWith(`hrmpm-${t.key}-`)).forEach((k) => { vals[k.slice(`hrmpm-${t.key}-`.length)] = { v: localStorage.getItem(k) || '', by: me, at: 0 }; }); } catch (e) {} }
+    loadMe(); renderMe(); renderSteps(); renderStage(); syncJob();
+    if (db && !local) {
+      setSync('불러오는 중…'); const timer = setTimeout(() => setSync('응답이 늦습니다 — 입력은 계속 저장을 시도합니다'), 10000);
+      unsub = db.collection(`pm/${t.key}/f`).onSnapshot(async (snap) => {
+        clearTimeout(timer); const ids = []; const seen = new Set(); const altBefore = get('s1-alt');
+        if (!team || team.key !== t.key) return; (snap.docs || snap).forEach((d) => { const x = d.data ? d.data() : d; seen.add(d.id); if (unsent.has(t.key + '/' + d.id)) return; vals[d.id] = { v: x.v || '', by: x.by || '', at: x.at || 0 }; ids.push(x.by); });
+        Object.keys(vals).forEach((k) => { if (!seen.has(k) && !unsent.has(t.key + '/' + k)) delete vals[k]; });
+        await resolveNames(ids); setSync('팀 공유 중'); if (get('s1-alt') !== altBefore) { renderSteps(); renderStage(); } else { applyRemote(); renderSteps(); } renderMe();
+      }, () => { clearTimeout(timer); setSync('불러오지 못했습니다 — 새로고침해 보세요'); });
+    }
+  }
+  // 교수자·전체 현황
+  const OV = {};
+  function renderOV() {
+    const tb = $('ovtable'); tb.replaceChildren(); const hd = el('tr'); ['팀', '진행률', ...STEPS.map((s) => s.name.split(' ')[0] + (s.day === 'mon' ? ' 월' : ' 화')), '마지막 입력'].forEach((h) => hd.append(el('th', null, h))); const th = el('thead'); th.append(hd); tb.append(th);
+    const body = el('tbody');
+    TEAMS.forEach((t) => {
+      const st = team, sc = cur; team = t; cur = OV[t.key] || {};
+      try {
+        const req = REQ(); const pct = Math.round(req.filter((k) => get(k).trim()).length / req.length * 100); const last = Math.max(0, ...Object.values(cur).map((x) => x.at || 0));
+        const tr = el('tr'); tr.append(el('td', null, dispName())); const c1 = el('td', 'n', pct + '%'); const pb = el('span', 'pbar'); const pi = el('i'); pi.style.width = pct + '%'; pb.append(pi); c1.append(pb); tr.append(c1);
+        STEPS.forEach((s) => { const d = !!s.done(); tr.append(el('td', 'n ' + (d ? 'ok' : 'no'), d ? '완료' : '—')); });
+        const m = last ? Math.round((Date.now() - last) / 60000) : null; tr.append(el('td', 'n', m == null ? '입력 없음' : m < 1 ? '방금' : m < 60 ? m + '분 전' : Math.round(m / 60) + '시간 전')); body.append(tr);
+      } finally { team = st; cur = sc; }
+    });
+    tb.append(body);
+  }
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest && e.target.closest('a.ovlink'); if (!a) return; e.preventDefault();
+    const card = $('ovcard'); card.hidden = false;
+    if (db && !local) startOV(); else { const t = $('ovtable'); t.replaceChildren(); const cap = el('caption', 'clab', '이 화면은 팀 공유가 연결되지 않아 다른 팀 현황을 볼 수 없습니다. 수업 링크(GitHub)로 들어오면 보입니다.'); cap.style.textAlign = 'left'; t.append(cap); }
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  let ovOn = false;
+  function armOV() {
+    $('ovcard').hidden = false; const t = $('ovtable'); t.replaceChildren();
+    const b = el('button', 'btn', '전체 팀 현황 불러오기'); b.type = 'button'; b.onclick = () => startOV(); const cap = el('caption'); cap.style.textAlign = 'left'; cap.append(b); t.append(cap);
+  }
+  function startOV() {
+    if (ovOn || !db) return; ovOn = true;
+    $('ovcard').hidden = false; renderOV();
+    TEAMS.forEach((t) => { db.collection(`pm/${t.key}/f`).onSnapshot((snap) => { const m = {}; (snap.docs || snap).forEach((d) => { const x = d.data ? d.data() : d; m[d.id] = { v: x.v || '', by: x.by || '', at: x.at || 0 }; }); OV[t.key] = m; renderOV(); try { if (team) refresh(); } catch (e) {} }, () => {}, 60000); });
+    setInterval(renderOV, 60000);
+  }
+
+  TEAMS.forEach((t) => { const b = el('button'); b.type = 'button'; b.dataset.key = t.key; b.setAttribute('aria-pressed', 'false'); b.append(el('b', null, t.label), el('small', null, t.alts ? '직무 2개 중 선택: ' + t.alts.map((a) => a[1]).join(' / ') : JOBS[t.job].name), el('small', null, `팀원 ${t.members.length}명`)); b.onclick = () => pickTeam(t); $('teams').append(b); });
+  $('tnin').addEventListener('input', () => { if (!team) return; put('teamname', $('tnin').value.slice(0, 20)); syncName(); renderMe(); });
+  (async () => {
+    try {
+      const c = window.claude; const [d, u] = c && c.use ? await Promise.all([c.use('db'), c.use('user')]) : [null, null];
+      db = d; user = u; if (user && user.id) { try { me = await user.id(); } catch (e) {} }
+      if (!db && !c) { db = sheetDB('hrm9:'); me = me || localId(); }
+      if (!db) { local = true; setSync('이 화면에서는 팀 공유가 안 됩니다 — 이 브라우저에만 저장'); } else { setSync('팀 공유 준비됨'); setTimeout(flushOutbox, 1500); try { /[?&#]prof/.test(location.href) ? startOV() : armOV(); } catch (e) {} }
+    } catch (e) { local = true; setSync('이 화면에서는 팀 공유가 안 됩니다 — 이 브라우저에만 저장'); }
+    let saved = null; try { saved = localStorage.getItem('hrmpm-team'); } catch (e) {}
+    const t = TEAMS.find((x) => x.key === saved); if (t) pickTeam(t);
+  })();
+})();
+</script>
+
+</body></html>
+</body></html>
