@@ -199,13 +199,10 @@ details.season > summary { font-size: 13px; color: var(--gold); cursor: pointer;
 #quizBanner a.qb-btn:focus-visible{outline:3px solid #f3c969;outline-offset:2px}
 @media print{#quizBanner{display:none}}
 </style>
-<section id="quizBanner" aria-label="11/16 이어서 할 것"><div class="qb-in">
-  <span class="qb-tag">11/16(월) 이어서</span>
-  <div class="qb-t">성과관리 ④~⑥ 팀 협업 — 11/10에 퀴즈만 하고 못 한 단계<span>①~③에 쓴 내용은 그대로 있습니다 → <b>④ 평가 방법 · 막을 오류(BARS 앵커)</b> → <b>⑤ AI 제안 검증</b> → <b>⑥ 보상으로 넘길 것</b> · PDF → DOOR</span>
-  <span style="display:block;margin-top:4px"><b style="color:#f3c969">③ 성과지표 4종이 비어 있는 팀은 ③부터 10분</b> — ④는 ③의 지표로 씁니다. 아래 단계 단추에서 초록 점이 없는 단계부터.</span>
-  <details style="margin-top:6px;font-size:13px"><summary style="cursor:pointer;color:#f3c969;font-weight:700">11/10 개념 다시 보기 — BARS · 평가오류 6가지 (퀴즈에 없었던 사람도)</summary>
-  <div style="margin-top:4px;line-height:1.6"><b>BARS(행동기준 평정척도)</b> = 점수마다 <b>관찰할 수 있는 행동</b>을 붙인 척도 — 5점 · 3점 · 1점에 「언제 · 무엇을 · 어떤 기준으로」 한 행동을 적는다. 평가자마다 같은 행동을 같은 점수로 읽게 돕는다(오류를 없애 주지는 않는다).<br>
-  <b>평가오류 6가지 → 막는 장치</b> · 현혹 효과(한 장점이 전체 점수를 끌어올림) → 항목별 따로 평가 · 관대화/엄격화 → 평가자 교육 · 분포 점검 · 중심화(다 보통) → BARS · 강제할당 · 논리적 오류(비슷해 보이는 항목을 같게) → 항목 정의 분리 · 최근 효과(마지막 일만 기억) → 기간 중 관찰 기록 · 상동적 태도(출신 · 집단으로 판단) → 행동 근거만 · 여러 평가자</div></details></div>
+<section id="quizBanner" aria-label="BARS·평가오류 퀴즈"><div class="qb-in">
+  <span class="qb-tag">11/10 워밍업</span>
+  <div class="qb-t">BARS · 평가오류 퀴즈부터 · 13:15 오픈<span>퀴즈 뒤 ④에 우리 직무 앵커(5·3·1점 행동)와 막을 오류를 씁니다 → ⑤ AI 제안 검증 → ⑥ 보상·저장</span></div>
+  <a class="qb-btn" href="hrm-quiz.html" target="_blank" rel="noopener">BARS·평가오류 퀴즈 ↗</a>
 </div></section>
 <!-- QUIZ-BANNER:END -->
 <header class="top">
@@ -230,7 +227,7 @@ details.season > summary { font-size: 13px; color: var(--gold); cursor: pointer;
     </ol>
     <div class="days">
       <div class="day mon"><b>11/9(월) · ①~③단계</b>개념 복습 → 핵심 업무 고르기 → 성과기준 → 성과지표 4종</div>
-      <div class="day tue"><b>11/16(월) · ④~⑥단계</b>(11/10에 못 한 팀 협업) 평가 방법과 오류 → AI 제안 검증 → 보상으로 넘길 것 · PDF 저장</div>
+      <div class="day tue"><b>11/10(화) · ④~⑥단계</b>평가 방법과 오류 → AI 제안 검증 → 보상으로 넘길 것 · PDF 저장</div>
     </div>
   </section>
 
@@ -538,7 +535,7 @@ details.season > summary { font-size: 13px; color: var(--gold); cursor: pointer;
     { name: '⑤ AI 제안 검증', day: 'tue', done: () => s5done() },
     { name: '⑥ 보상으로 넘기기 · 저장', day: 'tue', done: () => TK('a6').done() },
   ];
-  function head(c, i, title) { const h = el('div', 'stagehead'); h.append(el('span', 'eyebrow', `단계 ${'①②③④⑤⑥'[i]}`), el('span', 'daytag ' + STEPS[i].day, STEPS[i].day === 'mon' ? '11/9(월)' : '11/16(월)')); c.append(h, el('h2', null, title)); }
+  function head(c, i, title) { const h = el('div', 'stagehead'); h.append(el('span', 'eyebrow', `단계 ${'①②③④⑤⑥'[i]}`), el('span', 'daytag ' + STEPS[i].day, STEPS[i].day === 'mon' ? '11/9(월)' : '11/10(화)')); c.append(h, el('h2', null, title)); }
 
 
   // ================= 참여 장치: 워밍업 실험 · 평가오류 퀴즈 · 짝 팀 교차 점검 =================
@@ -625,7 +622,7 @@ details.season > summary { font-size: 13px; color: var(--gold); cursor: pointer;
   const pvOf = (m, tk) => (m['pv-to'] ? m['pv-to'].v : (PAIR[tk] || ''));
   const myPv = () => (vals['pv-to'] ? get('pv-to') : PAIR[team.key] || '');
   function peer(c) {
-    const it = el('div', 'item'); it.append(el('div', 'where', '교차 점검 · 내가 이 지표로 평가받는 신입이라면?'), el('p', 'lead', '짝 팀은 비슷한 직무끼리 미리 배정돼 있습니다(「배정」 표시). 그 팀의 지표가 아래에 나타납니다. 그 회사 신입이 되었다고 생각하고, 가장 걸리는 지표 하나를 골라 공정 · 애매 · 불공정과 이유 한 줄을 씁니다. 나머지 지표와 「이렇게 바꾸면?」은 시간이 남으면 씁니다. 우리 의견은 1분 안에 짝 팀 화면에 나타나고, 짝 팀은 다음 시간(11/16 월) 시작할 때 보고 지표를 고칩니다.'));
+    const it = el('div', 'item'); it.append(el('div', 'where', '교차 점검 · 내가 이 지표로 평가받는 신입이라면?'), el('p', 'lead', '짝 팀은 비슷한 직무끼리 미리 배정돼 있습니다(「배정」 표시). 그 팀의 지표가 아래에 나타납니다. 그 회사 신입이 되었다고 생각하고, 가장 걸리는 지표 하나를 골라 공정 · 애매 · 불공정과 이유 한 줄을 씁니다. 나머지 지표와 「이렇게 바꾸면?」은 시간이 남으면 씁니다. 우리 의견은 1분 안에 짝 팀 화면에 나타나고, 짝 팀은 내일(화) 시작할 때 보고 지표를 고칩니다.'));
     if (myPv()) startOV();
     const pk = el('div', 'chips'); pk.append(el('span', 'clab', '짝 팀'));
     const pbs = TEAMS.filter((t) => t.key !== team.key).map((t) => { const b = el('button', 'chip', t.label + (PAIR[team.key] === t.key ? ' (배정)' : '')); b.type = 'button'; b.onclick = () => { put('pv-to', myPv() === t.key ? '' : t.key); startOV(); ap(); refresh(); }; pk.append(b); return [t.key, b]; });
@@ -668,13 +665,13 @@ details.season > summary { font-size: 13px; color: var(--gold); cursor: pointer;
   }
   function renderSave() {
     const c = $('savecard'); if (!c || !team) return; c.replaceChildren();
-    c.append(el('span', 'eyebrow', '저장 · 불러오기 · 제출'), el('h2', null, '오늘 한 것 저장하고, 다음 시간에 이어서 하기'));
+    c.append(el('span', 'eyebrow', '저장 · 불러오기 · 제출'), el('h2', null, '오늘 한 것 저장하고, 내일 이어서 하기'));
     c.append(el('p', 'lead', '팀 공유 화면에서는 입력이 자동으로 서버에 저장됩니다. 그래도 수업이 끝나면 PDF와 입력 파일을 한 번씩 받아 팀 Drive에 올려 둡니다 — 인터넷이 끊기거나 다른 기기에서 열어도 이어서 할 수 있게.'));
     const g = el('div', 'svgrid');
     const pdfBox = (mode, title, sub) => { const d = el('div', 'svbox'); d.append(el('b', null, title), el('span', 'clab', sub)); const b = el('button', 'btn primary', 'PDF 저장'); b.type = 'button'; const m = el('span', 'warnline'); b.onclick = () => savePDF(b, m, mode); d.append(b, m); return d; };
-    g.append(pdfBox('mon', '① 오늘(월) 한 것', '①~③ + 워밍업 · 교차 점검'), pdfBox('tue', '② 11/16(월) 작업분', '④~⑥ + 퀴즈 · 받은 의견 반영'), pdfBox('toc', '③ 최종 보고서 로드맵(목차)', '⑥의 12개 장 상태 · 담당 · 역할'), pdfBox('all', '④ 전체 — DOOR 제출용', '①~⑥ 전부 + 로드맵'));
+    g.append(pdfBox('mon', '① 오늘(월) 한 것', '①~③ + 워밍업 · 교차 점검'), pdfBox('tue', '② 내일(화) 작업분', '④~⑥ + 퀴즈 · 받은 의견 반영'), pdfBox('toc', '③ 최종 보고서 로드맵(목차)', '⑥의 12개 장 상태 · 담당 · 역할'), pdfBox('all', '④ 전체 — DOOR 제출용', '①~⑥ 전부 + 로드맵'));
     c.append(g);
-    const io = el('div', 'svbox wide'); io.append(el('b', null, '⑤ 입력 내용 파일로 저장 · 불러오기'), el('span', 'clab', '팀이 쓴 칸 전부를 파일 하나(.json)로 받습니다. 다음 시간에 다른 기기에서 열거나 서버가 안 될 때 "불러오기"로 되살립니다.'));
+    const io = el('div', 'svbox wide'); io.append(el('b', null, '⑤ 입력 내용 파일로 저장 · 불러오기'), el('span', 'clab', '팀이 쓴 칸 전부를 파일 하나(.json)로 받습니다. 내일 다른 기기에서 열거나 서버가 안 될 때 "불러오기"로 되살립니다.'));
     const row = el('div', 'tools'); const sb = el('button', 'btn', '입력 내용 저장 (.json)'); sb.type = 'button'; const sm = el('span', 'warnline');
     sb.onclick = () => { const data = {}; Object.keys(vals).forEach((k) => { if (vals[k] && String(vals[k].v || '') !== '') data[k] = vals[k].v; }); const blob = new Blob([JSON.stringify({ course: 'HRM-성과관리', team: team.key, teamName: dispName(), savedAt: new Date().toISOString(), data }, null, 1)], { type: 'application/json' }); saveBlob(blob, `HRM_성과관리_${dispName().replace(/[\\/:*?"<>|]/g, '')}_입력내용_${new Date().toISOString().slice(5, 10).replace('-', '')}.json`, sm); };
     const fi = el('input'); fi.type = 'file'; fi.accept = '.json,application/json'; fi.hidden = true; const lb = el('button', 'btn', '불러오기'); lb.type = 'button'; lb.onclick = () => fi.click();
@@ -690,7 +687,7 @@ details.season > summary { font-size: 13px; color: var(--gold); cursor: pointer;
     row.append(sb, lb, fi); io.append(row, conf, sm); c.append(io);
     const dv = el('div', 'svbox wide'); dv.append(el('b', null, '⑥ 구글 드라이브 어디에 올리나'));
     const tbl = factTable5(['파일', '올릴 곳', '파일 이름 예'], [
-      ['①~③ · ④~⑥ PDF', '팀 공유 Drive › 인적자원관리 › 성과관리', `HRM_성과관리_${dispName()}_1109_월.pdf`],
+      ['오늘 · 내일 PDF', '팀 공유 Drive › 인적자원관리 › 성과관리', `HRM_성과관리_${dispName()}_1109_월.pdf`],
       ['입력 내용 (.json)', '같은 폴더 (덮어쓰지 말고 날짜별로)', `HRM_성과관리_${dispName()}_입력내용_1109.json`],
       ['로드맵 PDF', '팀 공유 Drive › 인적자원관리 › 00_최종보고서', `HRM_성과관리_${dispName()}_로드맵.pdf`],
       ['전체 PDF', 'DOOR 제출 (팀 대표 1명) + 성과관리 폴더에도 보관', `HRM_성과관리_${dispName()}_전체.pdf`],
@@ -754,7 +751,7 @@ details.season > summary { font-size: 13px; color: var(--gold); cursor: pointer;
     const qo = el('p', 'rowown'); derived.push(() => { const mine = meName && owner('a3qa') === meName; qo.textContent = `담당 ${dn(owner('a3qa'))} · 확인 ${dn(checker('a3qa'))}` + (mine ? '  ← 내 칸' : ''); qo.classList.toggle('mine', !!mine); }); c.append(qo, ckBox('a3qa'));
     c.append(writeBlock('s3-qa', { title: '정성 표현을 관찰할 수 있는 기준으로 바꾸기', lead: '"잘한다·꼼꼼하다·창의적이다"는 평가자마다 다르게 읽습니다. 행동·품질·판정 기준이 보이게 바꿉니다. 숫자가 아니어도 됩니다.', pat: '✗ [흐릿한 표현] → ✓ [언제 · 무엇을 · 어떤 기준으로 하는가]', ex: `✗ ${j.qual[0]} → ✓ ${j.qual[1]}`, rows: 2 }));
     peer(c);
-    c.append(el('p', 'notice', '①~③은 여기까지입니다. 다음 시간(11/16 월)에는 이 지표로 "누가 · 어떻게" 평가할지 정하고, AI가 낸 지표 후보를 검증합니다. 표가 비어 있으면 검증할 것이 없습니다.'));
+    c.append(el('p', 'notice', '오늘(월)은 여기까지입니다. 내일(화)은 이 지표로 "누가 · 어떻게" 평가할지 정하고, AI가 낸 지표 후보를 검증합니다. 표가 비어 있으면 내일 검증할 것이 없습니다.'));
     c.append(stuck(['지표가 모두 결과(R)다 → 신입이 통제할 수 없는 외부 요인(경기·날씨)이 섞입니다. 행동·질을 하나씩 넣습니다.', '"만족도 90%"처럼 데이터를 구할 수 없는 지표 → 누가, 언제, 무엇으로 재나? 못 쓰면 다른 지표로.', '목표가 모두 "90% 이상" → 이 직무·이 기업에서 현실적인 수준인지 근거 한 줄.']));
   }
   function renderS4(c) {
@@ -856,7 +853,7 @@ details.season > summary { font-size: 13px; color: var(--gold); cursor: pointer;
       const w = el('td'); w.append(el('div', null, what), el('div', 'clab', '← ' + src)); tr.append(w);
       const stc = el('td'); stc.append(marks('rp-st-' + id, RST)); if (id === 'pm') { const pg = el('div', 'clab'); derived.push(() => { pg.textContent = '이 워크시트 진행: ' + Math.round(REQ().filter((k) => get(k).trim()).length / REQ().length * 100) + '%'; }); stc.append(pg); } tr.append(stc);
       const oc = el('td'); oc.append(slotPick('rp-o-' + id, true)); tr.append(oc);
-      const nc = el('td'); const ta = el('textarea'); ta.rows = 2; ta.placeholder = id === 'pm' ? '(예) DOOR 11/16 PDF · 보상 연결 문장 다듬기' : '(예) 팀 Drive 3주차 폴더 · 출처 날짜 추가'; bindText(ta, 'rp-n-' + id, null); nc.append(ta); tr.append(nc);
+      const nc = el('td'); const ta = el('textarea'); ta.rows = 2; ta.placeholder = id === 'pm' ? '(예) DOOR 11/10 PDF · 보상 연결 문장 다듬기' : '(예) 팀 Drive 3주차 폴더 · 출처 날짜 추가'; bindText(ta, 'rp-n-' + id, null); nc.append(ta); tr.append(nc);
       bd.append(tr);
     });
     tb.append(bd); tw.append(tb); it.append(tw);
@@ -897,7 +894,7 @@ details.season > summary { font-size: 13px; color: var(--gold); cursor: pointer;
     ];
   }
   const loadScript = (src) => new Promise((ok, no) => { if (document.querySelector(`script[src="${src}"]`)) return ok(); const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => no(new Error('load')); document.head.append(s); });
-  const PMODE = { mon: ['11/9 ①~③', (h) => /^(팀|①|②|③|참여)/.test(h), '1109_월'], tue: ['11/16 ④~⑥', (h) => /^(팀|④|⑤|⑥|참여)/.test(h), '1116_월'], toc: ['최종 보고서 로드맵', (h) => /^(팀|최종 보고서)/.test(h), '로드맵'], all: ['전체', () => true, '전체'] };
+  const PMODE = { mon: ['11/9 ①~③', (h) => /^(팀|①|②|③|참여)/.test(h), '1109_월'], tue: ['11/10 ④~⑥', (h) => /^(팀|④|⑤|⑥|참여)/.test(h), '1110_화'], toc: ['최종 보고서 로드맵', (h) => /^(팀|최종 보고서)/.test(h), '로드맵'], all: ['전체', () => true, '전체'] };
   function reportNode(mode) {
     mode = mode || 'all';
     const n = document.createElement('div');
@@ -1019,7 +1016,7 @@ details.season > summary { font-size: 13px; color: var(--gold); cursor: pointer;
   }
   function renderSteps() {
     const n = $('steps'); n.replaceChildren();
-    STEPS.forEach((s, i) => { const b = el('button'); b.type = 'button'; b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', String(i === step)); b.append(el('span', 'dot' + (s.done() ? ' done' : '')), el('span', 'dd ' + s.day, s.day === 'mon' ? '11/9' : '11/16'), document.createTextNode(s.name)); const cnt = meName ? TASKS().filter((x) => x.st === i && owner(x.id) === meName && !x.done()).length : 0; if (cnt) b.append(el('span', 'mine', '내 칸 ' + cnt)); b.onclick = () => { step = i; renderSteps(); renderStage(); }; n.append(b); });
+    STEPS.forEach((s, i) => { const b = el('button'); b.type = 'button'; b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', String(i === step)); b.append(el('span', 'dot' + (s.done() ? ' done' : '')), el('span', 'dd ' + s.day, s.day === 'mon' ? '월' : '화'), document.createTextNode(s.name)); const cnt = meName ? TASKS().filter((x) => x.st === i && owner(x.id) === meName && !x.done()).length : 0; if (cnt) b.append(el('span', 'mine', '내 칸 ' + cnt)); b.onclick = () => { step = i; renderSteps(); renderStage(); }; n.append(b); });
   }
   function renderStage() {
     bound = []; derived = []; const c = $('stage'); c.replaceChildren(); RENDER[step](c);
